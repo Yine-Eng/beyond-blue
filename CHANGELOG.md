@@ -4,6 +4,29 @@ All notable changes to Beyond Blue are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/).
 
+## [1.1.0] - 2026-10-28
+
+### Features
+
+- **staff:** Add the cohort dashboard with a11y checks (#99)
+- **day-plus-100:** Graduate check-in and aggregate-only staff insights (#100)
+- **demo:** View as staff (demo) with fictional data only (#106)
+
+### Bug fixes
+
+- **auth:** Keep sessions through role checks and sign out only this browser (#104)
+
+### Documentation
+
+- **adr:** Record the decision not to containerize (#101)
+- **repo:** Staff demo, day +100 and a11y coverage; e2e against protected previews (#108)
+
+### Tests
+
+- **ci:** Make axe checks and the long journey reliable on the live site (#97)
+- **ci:** Delete every account e2e creates in the hosted project (#98)
+- **fund:** Staff fund review flow and magic-link callback tests (#107)
+
 ## [1.0.0] - 2026-10-28
 
 ### Features
