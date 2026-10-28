@@ -6,6 +6,7 @@ import { CountdownHero } from "@/components/plan/countdown-hero";
 import { FocusCard } from "@/components/plan/focus-card";
 import { PlanSkeleton } from "@/components/plan/plan-skeleton";
 import { InstallCard } from "@/components/pwa/install-card";
+import { CHECK_IN_WINDOW } from "@/content/day-plus-100";
 import { Button } from "@/components/ui/button";
 import { getPlan } from "@/lib/data/plan";
 import { greetingFor } from "@/lib/domain/greeting";
@@ -39,6 +40,14 @@ async function HomeContent() {
           See your full plan <ArrowRight aria-hidden="true" />
         </Link>
       </Button>
+      {plan.daysLeft <= -CHECK_IN_WINDOW.opens && plan.daysLeft >= -CHECK_IN_WINDOW.closes && (
+        <Link
+          href="/day-plus-100"
+          className="rounded-card bg-area-network text-navy-900 block p-4 font-semibold"
+        >
+          It&apos;s Day +100: tell us how it&apos;s going (3 minutes) →
+        </Link>
+      )}
       <InstallCard />
     </div>
   );

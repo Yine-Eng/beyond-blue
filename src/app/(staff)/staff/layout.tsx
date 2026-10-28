@@ -5,11 +5,12 @@ import { Wordmark } from "@/components/brand/wordmark";
 import { PlanSkeleton } from "@/components/plan/plan-skeleton";
 import { Toaster } from "@/components/ui/sonner";
 import { signOut } from "@/lib/actions/auth";
+import { leaveDemo } from "@/lib/actions/demo";
 import { getStaffAccess } from "@/lib/data/fund";
 
 /** Non-staff stay signed in and see a short explanation; the staff page itself never renders. */
 async function StaffGate({ children }: { children: ReactNode }) {
-  const { isStaff } = await getStaffAccess();
+  const { isStaff, isDemo } = await getStaffAccess();
   if (!isStaff)
     return (
       <section aria-labelledby="staff-only" className="rounded-card bg-cream-50 p-6">
@@ -28,6 +29,29 @@ async function StaffGate({ children }: { children: ReactNode }) {
           Go to your Beyond Blue home
         </Link>
       </section>
+    );
+  if (isDemo)
+    return (
+      <>
+        <aside
+          aria-label="Staff demo"
+          className="bg-gold-400 text-navy-900 rounded-card mb-6 flex flex-wrap items-center gap-3 px-4 py-3"
+        >
+          <p className="flex-1 text-sm">
+            <strong>Staff demo.</strong> A fictional pilot cohort, generated for this session only.
+            No real students, and decisions aren&apos;t saved. Deleted after 24 hours.
+          </p>
+          <form action={leaveDemo}>
+            <button
+              type="submit"
+              className="border-navy-900 min-h-11 rounded-lg border-2 px-3 text-sm font-semibold"
+            >
+              Leave the demo
+            </button>
+          </form>
+        </aside>
+        {children}
+      </>
     );
   return children;
 }

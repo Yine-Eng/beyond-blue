@@ -10,6 +10,7 @@ export const PROTECTED_PREFIXES = [
   "/switch-pathway",
   "/detour",
   "/fund",
+  "/day-plus-100",
   "/mentor",
   "/staff",
 ] as const;

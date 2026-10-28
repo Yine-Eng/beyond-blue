@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { cache } from "react";
 import type { FundCategory, FundStatus } from "@/content/fund";
 import { getStudentContext } from "@/lib/auth/session";
+import { demoFundBalance, demoFundRequests } from "@/lib/demo/staff";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 const REQUEST_COLUMNS =
@@ -15,8 +16,11 @@ const REQUEST_COLUMNS =
  */
 export const getStaffAccess = cache(async () => {
   const ctx = await getStudentContext();
-  const isStaff = ctx.profile.role === "staff" || ctx.profile.role === "admin";
-  return { ...ctx, isStaff };
+  // A staff demo is an anonymous demo session; it sees generated fictional data only and never
+  // gets the staff role, so RLS still gives it nothing real.
+  const isDemo = ctx.profile.is_demo && ctx.user.demoRole === "staff";
+  const isStaff = ctx.profile.role === "staff" || ctx.profile.role === "admin" || isDemo;
+  return { ...ctx, isStaff, isDemo };
 });
 
 /**
@@ -58,7 +62,17 @@ export type QueueFilters = { status?: FundStatus; category?: FundCategory };
 
 /** Review queue, oldest first. Demo sessions never reach the real queue. */
 export async function getFundQueue(filters: QueueFilters) {
-  await requireStaff();
+  const access = await requireStaff();
+  if (access.isDemo) {
+    const requests = demoFundRequests(access.user.id)
+      .filter(
+        (r) =>
+          (!filters.status || r.status === filters.status) &&
+          (!filters.category || r.category === filters.category),
+      )
+      .sort((a, b) => a.submitted_at.localeCompare(b.submitted_at));
+    return { requests, balance: demoFundBalance(access.user.id), isDemo: true };
+  }
   const supabase = await createSupabaseServerClient();
   let query = supabase
     .from("fund_requests")
@@ -71,12 +85,17 @@ export async function getFundQueue(filters: QueueFilters) {
   if (filters.category) query = query.eq("category", filters.category);
   const [requestsRes, balance] = await Promise.all([query, getFundBalance()]);
   if (requestsRes.error) throw requestsRes.error;
-  return { requests: requestsRes.data, balance };
+  return { requests: requestsRes.data, balance, isDemo: false };
 }
 
 /** One request with the student's basics and a short-lived link to the document. */
 export async function getFundRequestForReview(id: string) {
-  await requireStaff();
+  const access = await requireStaff();
+  if (access.isDemo) {
+    const request = demoFundRequests(access.user.id).find((r) => r.id === id);
+    if (!request) return null;
+    return { request, documentUrl: null, balance: demoFundBalance(access.user.id), isDemo: true };
+  }
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase
     .from("fund_requests")
@@ -95,5 +114,5 @@ export async function getFundRequestForReview(id: string) {
     documentUrl = signed?.signedUrl ?? null;
   }
   const balance = await getFundBalance();
-  return { request: data, documentUrl, balance };
+  return { request: data, documentUrl, balance, isDemo: false };
 }
