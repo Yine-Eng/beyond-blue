@@ -43,7 +43,9 @@ export function buildContentSecurityPolicy(env: Env): string {
   };
 
   const policy = Object.entries(directives).map(([name, values]) => `${name} ${values.join(" ")}`);
-  if (!isDev) policy.push("upgrade-insecure-requests");
+  // Only on Vercel (always HTTPS). A local `next start` on http://localhost would otherwise upgrade
+  // its own redirects to https://localhost and fail.
+  if (env.VERCEL_ENV) policy.push("upgrade-insecure-requests");
   return policy.join("; ");
 }
 
