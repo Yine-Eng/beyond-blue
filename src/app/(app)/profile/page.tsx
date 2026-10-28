@@ -9,6 +9,7 @@ import { type PathwayId, getPathway } from "@/content/pathways";
 import { signOut } from "@/lib/actions/auth";
 import { requirePlan } from "@/lib/auth/session";
 import { palette, pathwayColors } from "@/lib/design/tokens";
+import { initials } from "@/lib/initials";
 
 export const metadata: Metadata = { title: "Profile" };
 
@@ -19,15 +20,6 @@ const TAG_TINTS = [
   "bg-area-network",
   "bg-area-wellness",
 ];
-
-function initials(name: string) {
-  return name
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0]!.toUpperCase())
-    .join("");
-}
 
 async function ProfileContent({ saved }: { saved: Promise<boolean> }) {
   const { profile, plan, cohort } = await requirePlan();

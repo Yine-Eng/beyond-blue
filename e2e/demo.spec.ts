@@ -72,6 +72,27 @@ test("explore as Veronica: plan, area drill-in and reset", async ({ page }) => {
   await page.getByRole("link", { name: "Back to your plan" }).click();
   await expect(main.getByText("15 of 30 steps complete").filter({ visible: true })).toBeVisible();
 
+  // Network: seeded connections, matched alumni and a connection request.
+  await page.goto("/network");
+  await expect(
+    page.getByRole("heading", { level: 1, name: "Your Beyond Blue Network" }),
+  ).toBeVisible();
+  const marcus = main.getByRole("listitem").filter({ hasText: "Marcus Bell" });
+  await expect(marcus.getByText("Connected")).toBeVisible();
+  await expect(
+    main.getByRole("listitem").filter({ hasText: "Alicia Moreno" }).getByText("Pending"),
+  ).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Alumni You May Want to Meet" })).toBeVisible();
+  await expect(main.getByText(/Also lives in Atlanta, GA/).first()).toBeVisible();
+  await expectNoA11yViolations(page);
+  await main
+    .getByRole("button", { name: /^Connect with / })
+    .first()
+    .click();
+  await page.getByRole("button", { name: "Send request" }).click();
+  await expect(page.getByText(/Request sent to/)).toBeVisible({ timeout: 20_000 });
+  await expect(main.getByRole("button", { name: /^Withdraw request to / })).toHaveCount(2);
+
   // Profile, and an edit round-trip.
   await page.goto("/profile");
   await expect(page.getByRole("heading", { level: 1, name: "Veronica Thompson" })).toBeVisible();

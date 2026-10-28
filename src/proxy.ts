@@ -53,6 +53,7 @@ export const config = {
     "/profile/:path*",
     "/onboarding/:path*",
     "/tasks/:path*",
+    "/mentor/:path*",
     "/launch-file/:path*",
     "/auth/:path*",
     "/sign-in",
