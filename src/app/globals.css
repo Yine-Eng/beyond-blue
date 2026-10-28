@@ -184,6 +184,13 @@
 }
 
 /* Sunburst background from the deck: royal blue with soft lighter rays. */
+/* Below-the-fold story sections: the browser skips their style, layout and paint until they near
+   the viewport. Content stays in the accessibility tree and find-in-page. */
+@utility defer-render {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 1100px;
+}
+
 @utility bg-burst {
   background-color: var(--color-royal-700);
   background-image:
