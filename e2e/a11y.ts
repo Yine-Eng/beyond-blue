@@ -9,5 +9,13 @@ export async function expectNoA11yViolations(page: Page) {
   const blocking = results.violations.filter(
     (v) => v.impact === "serious" || v.impact === "critical",
   );
-  expect(blocking.map((v) => `${v.id}: ${v.help}`)).toEqual([]);
+  expect(
+    blocking.map(
+      (v) =>
+        `${v.id}: ${v.help} -> ${v.nodes
+          .slice(0, 5)
+          .map((n) => n.target.join(" "))
+          .join(", ")}`,
+    ),
+  ).toEqual([]);
 }
