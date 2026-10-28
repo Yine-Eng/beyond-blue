@@ -77,7 +77,14 @@ export function AreaHeatmap({ overview }: { overview: CohortOverview }) {
     overview.grid.find((g) => g.pathwayId === p && g.areaId === a)!.ratio;
   return (
     <div className="flex flex-col gap-3">
-      <div className="rounded-card overflow-x-auto border bg-white">
+      {/* Focusable so keyboard users can scroll it sideways on phones. */}
+      <div
+        // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- a scrollable region must be keyboard-focusable (WCAG 2.1.1)
+        tabIndex={0}
+        role="region"
+        aria-label="Progress by pathway and readiness area (scrolls sideways)"
+        className="rounded-card overflow-x-auto border bg-white"
+      >
         <table className="w-full min-w-[40rem] border-collapse text-sm">
           <caption className="sr-only">
             Share of steps completed, by pathway and readiness area
