@@ -28,6 +28,8 @@ test.describe("signed out", () => {
 });
 
 test("UI kit renders every section without a11y violations", async ({ page }) => {
+  // The kit is only built when NEXT_PUBLIC_ENABLE_UI_KIT is set (CI's local build), never on Vercel.
+  test.skip(!!process.env.PLAYWRIGHT_BASE_URL, "UI kit is disabled on deployed builds");
   await page.goto("/dev/ui");
   for (const name of ["Colour", "Typography", "Buttons", "Forms", "Scrapbook kit"]) {
     await expect(page.getByRole("heading", { level: 2, name })).toBeVisible();
