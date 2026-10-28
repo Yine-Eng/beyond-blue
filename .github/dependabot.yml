@@ -8,6 +8,10 @@ updates:
     open-pull-requests-limit: 5
     commit-message:
       prefix: "chore(deps)"
+    # Majors are deferred until after judging (30 Oct 2026); revisit then.
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
     groups:
       minor-and-patch:
         update-types: [minor, patch]
@@ -18,3 +22,7 @@ updates:
       interval: weekly
     commit-message:
       prefix: "ci"
+    # Majors are deferred until after judging (30 Oct 2026); revisit then.
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
