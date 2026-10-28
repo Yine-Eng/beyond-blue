@@ -29,6 +29,8 @@ const scopes = [
 
 const config = {
   extends: ["@commitlint/config-conventional"],
+  // Dependabot capitalises its subjects ("chore(deps): Bump x from 1 to 2"); accept those as-is.
+  ignores: [(message) => /^(chore\(deps\)|ci)(\([^)]*\))?: Bump /.test(message)],
   rules: {
     "scope-enum": [2, "always", scopes],
     "subject-case": [2, "never", ["sentence-case", "start-case", "pascal-case", "upper-case"]],

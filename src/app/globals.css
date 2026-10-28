@@ -162,9 +162,14 @@
   html {
     @apply font-sans;
     -webkit-text-size-adjust: 100%;
+    /* Keep focused and scrolled-to elements clear of the sticky site header (WCAG 2.4.11). */
+    scroll-padding-top: 5rem;
   }
   body {
     @apply bg-background text-foreground;
+    /* Scrapbook tape and doodles overhang their cards; never let them cause sideways scroll.
+       `clip` (unlike `hidden`) doesn't create a scroll container, so sticky headers still work. */
+    overflow-x: clip;
   }
   button:not(:disabled),
   [role="button"]:not(:disabled) {
@@ -209,5 +214,28 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/*
+ * Story-site "pinned paper" drop-in, driven by scroll position (no JavaScript).
+ * Browsers without scroll-driven animations simply show the content static.
+ */
+@keyframes pin-drop {
+  from {
+    transform: translateY(-14px) rotate(var(--reveal-tilt, -2deg));
+  }
+  to {
+    transform: none;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: pin-drop linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 70%;
+    }
   }
 }
