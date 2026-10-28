@@ -13,7 +13,7 @@ const student: MatchStudent = {
   pathwayId: "hired",
   pathwayName: "Hired",
   targetCity: "Atlanta, GA",
-  employer: "Peachtree Digital",
+  employer: "Halcyra Digital",
   gradSchool: null,
   industry: "Technology",
   journeyTags: ["First-Generation", "Relocating", "Financially Independent"],
@@ -38,7 +38,7 @@ describe("scoreMentor", () => {
       score: MATCH_WEIGHTS.sameCity,
       reasons: ["Also lives in atlanta"],
     });
-    expect(scoreMentor(student, mentor({ employer: "peachtree digital" })).score).toBe(30);
+    expect(scoreMentor(student, mentor({ employer: "halcyra digital" })).score).toBe(30);
     expect(scoreMentor(student, mentor({ industry: "Technology" })).reasons).toEqual([
       "Works in Technology",
     ]);
@@ -77,7 +77,7 @@ describe("scoreMentor", () => {
       student,
       mentor({
         city: "Atlanta, GA",
-        employer: "Peachtree Digital",
+        employer: "Halcyra Digital",
         industry: "Technology",
         pathways: ["hired"],
         journeyTags: ["First-Generation"],
@@ -86,7 +86,7 @@ describe("scoreMentor", () => {
     expect(result.score).toBe(30 + 30 + 20 + 10 + 8);
     expect(result.reasons).toEqual([
       "Also lives in Atlanta, GA",
-      "Works at Peachtree Digital",
+      "Works at Halcyra Digital",
       "Works in Technology",
     ]);
   });
@@ -98,7 +98,7 @@ describe("suggestMentors", () => {
     mentor({ id: "city", city: "Atlanta, GA" }),
     mentor({ id: "busy-city", city: "Atlanta, GA", activeMentees: 2 }),
     mentor({ id: "old-city", city: "Atlanta, GA", lastActiveAt: "2026-01-01T00:00:00Z" }),
-    mentor({ id: "best", city: "Atlanta, GA", employer: "Peachtree Digital" }),
+    mentor({ id: "best", city: "Atlanta, GA", employer: "Halcyra Digital" }),
   ];
 
   it("drops mentors below the minimum score and ranks by score", () => {

@@ -107,6 +107,69 @@ test("explore as Veronica: plan, area drill-in and reset", async ({ page }) => {
   await expect(main.getByText("Decatur, GA")).toBeVisible();
 });
 
+test("Detour Challenge, then switch Hired → Higher Education without losing work", async ({
+  page,
+}) => {
+  test.setTimeout(90_000);
+  await page.goto("/");
+  await page
+    .getByRole("button", { name: /Try the demo as Veronica/ })
+    .first()
+    .click();
+  await expect(page.getByRole("heading", { name: "Your 100-Day Curriculum" })).toBeVisible({
+    timeout: 30_000,
+  });
+  const main = page.locator("main");
+  // Next keeps recently visited pages mounted but hidden, so only match visible fields.
+  const field = (label: string | RegExp) => page.getByLabel(label).filter({ visible: true });
+
+  // The Detour task links to the guided builder.
+  await page.goto("/tasks/hired.wellness.detour-plan");
+  await page.getByRole("link", { name: /Start the Detour Challenge/ }).click();
+  await expect(page.getByRole("heading", { level: 1, name: "The Detour Challenge" })).toBeVisible();
+  await expectNoA11yViolations(page);
+
+  const next = page.getByRole("button", { name: "Save and continue" });
+  await next.click();
+  await expect(page.getByText("This field is required.")).toBeVisible();
+  await field("What's the job you're counting on?").fill("Start at Halcyra Digital in June.");
+  await next.click();
+  await field("Start date delayed").check();
+  await next.click();
+  await field(/wobbling/).fill("Onboarding paperwork goes quiet.");
+  await next.click();
+  await field(/first step/).fill("Restart applications and call Career Services.");
+  await next.click();
+  await field(/least you need each month/).fill("1800");
+  await expect(page.getByRole("heading", { name: /You don't have to detour alone/ })).toBeVisible();
+  await page.getByRole("button", { name: "Finish my Detour plan" }).click();
+  await expect(page.getByText("Detour plan saved to your Launch File.")).toBeVisible({
+    timeout: 20_000,
+  });
+  await page.getByRole("link", { name: "Back to your plan" }).click();
+  await expect(main.getByText("13 of 30 steps complete").filter({ visible: true })).toBeVisible();
+
+  // Switch pathway: the preview shows what's kept, then the plan re-maps.
+  await page.goto("/profile");
+  await page.getByRole("link", { name: "Switch pathway" }).click();
+  await expect(page.getByRole("heading", { level: 1, name: "Switch pathway" })).toBeVisible();
+  await field(/Higher Education/).check();
+  await expect(main.getByText(/13 completed outputs stay in your Launch File/)).toBeVisible();
+  await expectNoA11yViolations(page);
+  await field("What changed? (optional)").fill("Got into a funded master's program.");
+  await page.getByRole("button", { name: "Switch to Higher Education" }).click();
+  await expect(page).toHaveURL(/\/plan\?switched=higher_ed$/, { timeout: 20_000 });
+  await expect(
+    main.getByText(/You're now on the Higher Education pathway/).filter({ visible: true }),
+  ).toBeVisible();
+  await expect(main.getByText(/Pathway: Higher Education/).filter({ visible: true })).toBeVisible();
+
+  // The history records the change.
+  await page.goto("/switch-pathway");
+  await expect(main.getByText("Hired → Higher Education").filter({ visible: true })).toBeVisible();
+  await expect(main.getByText("“Got into a funded master's program.”")).toBeVisible();
+});
+
 test("the /demo page starts nothing until you press the button", async ({ page }) => {
   await page.goto("/demo");
   await expect(

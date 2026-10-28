@@ -73,7 +73,7 @@ select throws_ok(
   '42501', null, 'pathway history is written only by switch_pathway');
 
 select lives_ok(
-  $$ insert into public.detour_plans (student_id, answers) values ('a1111111-1111-1111-1111-111111111111', '{"planA":"Start at Peachtree"}') $$,
+  $$ insert into public.detour_plans (student_id, answers) values ('a1111111-1111-1111-1111-111111111111', '{"planA":"Start at Halcyra"}') $$,
   'a student can save their detour plan');
 reset role;
 
