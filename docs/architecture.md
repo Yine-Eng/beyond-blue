@@ -661,3 +661,4 @@ Because demo users are ordinary authenticated users with `is_demo = true`, demo 
 | [0003](adr/0003-data-access-pattern.md) | Data access: Server Components + Server Actions + RLS |
 | [0004](adr/0004-pdf-export.md) | Launch File PDF: client-side @react-pdf/renderer |
 | [0005](adr/0005-curriculum-as-code.md) | Curriculum as typed, versioned content |
+| [0006](adr/0006-no-containers.md) | No Docker images or containers for the app |
