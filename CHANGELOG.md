@@ -4,11 +4,22 @@ All notable changes to Beyond Blue are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.0] - 2026-10-28
+
+### Features
+
+- **db:** Add supabase schema, rls, storage and rate limiting (#78)
+- **content:** Add the 150-task curriculum and countdown logic (#79)
+- **auth:** Add magic-link sign-in and onboarding (#80)
+- **plan:** Add the plan screen and explore as veronica demo mode (#81)
+- **tasks:** Complete tasks with outputs and add the profile screen (#82)
+
 ## [0.2.1] - 2026-10-28
 
 ### Bug fixes
 
 - **landing:** Stop the budget table widening the page on phones
+- **landing:** Stop the budget table widening the page on phones (#76)
 
 ### Tests
 
