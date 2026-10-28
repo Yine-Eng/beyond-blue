@@ -5,7 +5,9 @@ import { useActionState } from "react";
 import { Button } from "@/components/ui/button";
 import { Field, FieldDescription, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { DemoButton, StaffDemoButton } from "@/components/demo/demo-button";
 import { requestMagicLink } from "@/lib/actions/auth";
+import { EMAIL_UNAVAILABLE } from "@/lib/auth/errors";
 
 export function SignInForm({ next }: { next?: string }) {
   const [state, action, pending] = useActionState(requestMagicLink, null);
@@ -19,6 +21,20 @@ export function SignInForm({ next }: { next?: string }) {
           We sent a sign-in link to <strong className="text-ink-900">{state.data.email}</strong>. It
           expires in one hour.
         </p>
+      </div>
+    );
+  }
+
+  // The email provider is at its limit: don't leave a judge at a dead end, offer the demos.
+  if (state && !state.ok && state.code === EMAIL_UNAVAILABLE) {
+    return (
+      <div className="flex flex-col gap-4">
+        <div role="alert" className="bg-cream-50 rounded-lg px-4 py-3">
+          <p className="text-navy-900 font-semibold">We can&apos;t send sign-in emails just now.</p>
+          <p className="text-body-sm text-ink-600 mt-1">{state.error}</p>
+        </div>
+        <DemoButton className="w-full" />
+        <StaffDemoButton className="self-center" />
       </div>
     );
   }

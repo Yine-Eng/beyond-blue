@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { z } from "zod";
+import { EMAIL_UNAVAILABLE } from "@/lib/auth/errors";
 import { safeNextPath } from "@/lib/auth/routes";
 import { RATE_LIMITS, checkRateLimit } from "@/lib/security/rate-limit";
 import { clientIp } from "@/lib/security/request";
@@ -55,7 +56,12 @@ export async function requestMagicLink(
         console.error(
           JSON.stringify({ event: "magic_link_error", status: error.status, code: error.code }),
         );
-        return fail("We couldn't send the link right now. Please try again in a minute.");
+        // Usually the email provider's hourly limit. The form offers the demos instead.
+        return fail(
+          "Please try again in a little while. Or explore Beyond Blue right now with a demo: no sign-up needed.",
+          undefined,
+          EMAIL_UNAVAILABLE,
+        );
       }
       return ok({ email });
     },
