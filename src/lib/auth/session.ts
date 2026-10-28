@@ -1,5 +1,6 @@
 import "server-only";
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
 import { cache } from "react";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
@@ -12,6 +13,8 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 export type SessionUser = { id: string; email: string | null; isAnonymous: boolean };
 
 export const getSessionUser = cache(async (): Promise<SessionUser | null> => {
+  // Session checks compare token expiry with the current time: always request-time work.
+  await connection();
   const supabase = await createSupabaseServerClient();
   const { data } = await supabase.auth.getClaims();
   const claims = data?.claims;
