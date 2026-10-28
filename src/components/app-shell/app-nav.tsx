@@ -6,8 +6,7 @@ import { cn } from "@/lib/utils";
 import { NAV_ITEMS, isActive } from "./nav-items";
 
 /** Fixed bottom tab bar for phones and tablets (below 1024 px). */
-export function BottomNav() {
-  const pathname = usePathname();
+export function BottomNavView({ pathname }: { pathname: string }) {
   return (
     <nav
       aria-label="Main"
@@ -38,8 +37,7 @@ export function BottomNav() {
 }
 
 /** Sidebar navigation for desktop (1024 px and up). */
-export function SidebarNav() {
-  const pathname = usePathname();
+export function SidebarNavView({ pathname }: { pathname: string }) {
   return (
     <nav aria-label="Main">
       <ul className="flex flex-col gap-1">
@@ -66,4 +64,14 @@ export function SidebarNav() {
       </ul>
     </nav>
   );
+}
+
+// The current URL is request data on dynamic routes, so these sit behind <Suspense> in the shell
+// (with the views above, minus the active highlight, as the static fallback).
+export function BottomNav() {
+  return <BottomNavView pathname={usePathname()} />;
+}
+
+export function SidebarNav() {
+  return <SidebarNavView pathname={usePathname()} />;
 }
