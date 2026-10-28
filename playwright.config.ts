@@ -7,6 +7,13 @@ if (existsSync(".env.local")) process.loadEnvFile(".env.local");
 const PORT = Number(process.env.PORT ?? 3000);
 const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? `http://localhost:${PORT}`;
 
+// The demo is rate-limited per client IP in the shared database. Against a local `next start`
+// there is no proxy header, so every CI run and local run would share one "unknown" bucket and
+// exhaust it. Give each test worker its own private-range address, as a proxy would. (Vercel sets
+// the real client IP itself, so this has no effect on deployed sites.)
+const octet = () => Math.floor(Math.random() * 254) + 1;
+const clientIp = `10.${octet()}.${octet()}.${octet()}`;
+
 /** Viewports from the Definition of Done: 375 px phone, 768 px tablet, 1280 px desktop. */
 export default defineConfig({
   testDir: "./e2e",
@@ -17,6 +24,7 @@ export default defineConfig({
   use: {
     baseURL,
     trace: "on-first-retry",
+    extraHTTPHeaders: { "x-forwarded-for": clientIp },
   },
   projects: [
     {

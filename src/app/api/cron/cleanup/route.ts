@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 
-const BUCKETS = ["task-outputs", "avatars"] as const;
+const BUCKETS = ["task-outputs", "avatars", "fund-docs"] as const;
 
 /**
  * Daily (vercel.json): removes uploaded files whose owner no longer exists, e.g. demo users purged

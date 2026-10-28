@@ -464,6 +464,126 @@ export type Database = {
           },
         ]
       }
+      fund_requests: {
+        Row: {
+          amount_cents: number
+          category: Database["public"]["Enums"]["fund_category"]
+          decided_at: string | null
+          document_path: string | null
+          id: string
+          justification: string
+          needed_by: string
+          next_step: string
+          reviewer_id: string | null
+          reviewer_notes: string | null
+          rubric: Json | null
+          status: Database["public"]["Enums"]["fund_status"]
+          student_id: string
+          submitted_at: string
+          updated_at: string
+        }
+        Insert: {
+          amount_cents: number
+          category: Database["public"]["Enums"]["fund_category"]
+          decided_at?: string | null
+          document_path?: string | null
+          id?: string
+          justification: string
+          needed_by: string
+          next_step: string
+          reviewer_id?: string | null
+          reviewer_notes?: string | null
+          rubric?: Json | null
+          status?: Database["public"]["Enums"]["fund_status"]
+          student_id: string
+          submitted_at?: string
+          updated_at?: string
+        }
+        Update: {
+          amount_cents?: number
+          category?: Database["public"]["Enums"]["fund_category"]
+          decided_at?: string | null
+          document_path?: string | null
+          id?: string
+          justification?: string
+          needed_by?: string
+          next_step?: string
+          reviewer_id?: string | null
+          reviewer_notes?: string | null
+          rubric?: Json | null
+          status?: Database["public"]["Enums"]["fund_status"]
+          student_id?: string
+          submitted_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fund_requests_reviewer_id_fkey"
+            columns: ["reviewer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fund_requests_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      fund_settings: {
+        Row: {
+          id: boolean
+          request_cap_cents: number
+          total_budget_cents: number
+          updated_at: string
+        }
+        Insert: {
+          id?: boolean
+          request_cap_cents?: number
+          total_budget_cents?: number
+          updated_at?: string
+        }
+        Update: {
+          id?: boolean
+          request_cap_cents?: number
+          total_budget_cents?: number
+          updated_at?: string
+        }
+        Relationships: [
+        ]
+      }
+      launch_files: {
+        Row: {
+          exported_at: string
+          id: string
+          snapshot: Json
+          student_id: string
+        }
+        Insert: {
+          exported_at?: string
+          id?: string
+          snapshot: Json
+          student_id: string
+        }
+        Update: {
+          exported_at?: string
+          id?: string
+          snapshot?: Json
+          student_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "launch_files_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       mentor_notes: {
         Row: {
           connection_id: string
@@ -616,6 +736,24 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      decide_fund_request: {
+        Args: {
+          p_id: string
+          p_note: string
+          p_rubric: Json
+          p_status: Database["public"]["Enums"]["fund_status"]
+        }
+        Returns: Database["public"]["Tables"]["fund_requests"]["Row"]
+      }
+      fund_balance: {
+        Args: never
+        Returns: {
+          approved_cents: number
+          remaining_cents: number
+          request_cap_cents: number
+          total_cents: number
+        }[]
+      }
       available_mentors: {
         Args: never
         Returns: {
@@ -643,6 +781,29 @@ export type Database = {
         Args: never
         Returns: { alumni: number; mentors: number; students_on_path: number }[]
       }
+      resubmit_fund_request: {
+        Args: {
+          p_amount_cents: number
+          p_category: Database["public"]["Enums"]["fund_category"]
+          p_document_path?: string
+          p_justification: string
+          p_needed_by: string
+          p_next_step: string
+          p_id: string
+        }
+        Returns: Database["public"]["Tables"]["fund_requests"]["Row"]
+      }
+      submit_fund_request: {
+        Args: {
+          p_amount_cents: number
+          p_category: Database["public"]["Enums"]["fund_category"]
+          p_document_path?: string
+          p_justification: string
+          p_needed_by: string
+          p_next_step: string
+        }
+        Returns: Database["public"]["Tables"]["fund_requests"]["Row"]
+      }
       switch_pathway: {
         Args: { p_reason?: string; p_to: string }
         Returns: Database["public"]["Tables"]["pathway_changes"]["Row"]
@@ -651,6 +812,14 @@ export type Database = {
     }
     Enums: {
       connection_status: "pending" | "accepted" | "declined" | "withdrawn"
+      fund_category:
+        | "certification_fee"
+        | "background_check"
+        | "interview_travel"
+        | "deposit"
+        | "relocation"
+        | "other"
+      fund_status: "submitted" | "in_review" | "needs_info" | "approved" | "declined"
       output_type: "file" | "link" | "form"
       user_role: "student" | "mentor" | "staff" | "admin"
     }
@@ -781,6 +950,15 @@ export const Constants = {
   public: {
     Enums: {
       connection_status: ["pending", "accepted", "declined", "withdrawn"],
+      fund_category: [
+        "certification_fee",
+        "background_check",
+        "interview_travel",
+        "deposit",
+        "relocation",
+        "other",
+      ],
+      fund_status: ["submitted", "in_review", "needs_info", "approved", "declined"],
       output_type: ["file", "link", "form"],
       user_role: ["student", "mentor", "staff", "admin"],
     },

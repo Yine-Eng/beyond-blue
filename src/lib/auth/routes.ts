@@ -7,7 +7,11 @@ export const PROTECTED_PREFIXES = [
   "/onboarding",
   "/tasks",
   "/launch-file",
+  "/switch-pathway",
+  "/detour",
+  "/fund",
   "/mentor",
+  "/staff",
 ] as const;
 
 export function isProtectedPath(pathname: string): boolean {
