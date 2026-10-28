@@ -76,18 +76,13 @@ export async function deleteTestUser(id: string): Promise<void> {
 }
 
 export type TestRole = "student" | "mentor" | "staff";
+export type TestAccount = { id: string; email: string; password: string };
 
-/**
- * Creates an `e2e-…@example.test` account with the given role and signs the browser context in
- * with it (password sign-in in Node, then the same cookies @supabase/ssr would set). The magic
- * link itself needs a mail server, so it isn't used here.
- */
-export async function signInAs(
-  context: BrowserContext,
-  baseURL: string,
+/** Creates an `e2e-…@example.test` account with the given role (deleted by the fixtures). */
+export async function createTestUser(
   role: TestRole,
   setup?: (userId: string) => Promise<void>,
-): Promise<string> {
+): Promise<TestAccount> {
   const email = `e2e-${role}-${randomBytes(5).toString("hex")}@example.test`;
   const password = randomBytes(24).toString("base64url");
   const { data, error } = await admin().auth.admin.createUser({
@@ -97,14 +92,36 @@ export async function signInAs(
   });
   if (error || !data.user) throw error ?? new Error("createUser failed");
   const id = data.user.id;
-
   const { error: roleError } = await admin()
     .from("profiles")
     .update({ role, preferred_name: `E2E ${role}`, full_name: `E2E ${role}` })
     .eq("id", id);
   if (roleError) throw roleError;
   await setup?.(id);
+  return { id, email, password };
+}
 
+/** A Supabase client signed in as the account, for acting as that user without a browser. */
+export async function clientFor({ email, password }: TestAccount): Promise<SupabaseClient> {
+  const client = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
+    { auth: { persistSession: false, autoRefreshToken: false } },
+  );
+  const { error } = await client.auth.signInWithPassword({ email, password });
+  if (error) throw error;
+  return client;
+}
+
+/**
+ * Signs a browser context in as the account: password sign-in in Node, then the same cookies
+ * @supabase/ssr would set. The magic link itself needs a mail server, so it isn't used here.
+ */
+export async function signInContext(
+  context: BrowserContext,
+  baseURL: string,
+  { email, password }: TestAccount,
+): Promise<void> {
   let jar: { name: string; value: string }[] = [];
   const client = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -118,8 +135,7 @@ export async function signInAs(
       },
     },
   );
-  const { error: signInError } = await client.auth.signInWithPassword({ email, password });
-  if (signInError) throw signInError;
+  const { error } = await client.auth.signInWithPassword({ email, password });
+  if (error) throw error;
   await context.addCookies(jar.map((c) => ({ ...c, url: baseURL })));
-  return id;
 }

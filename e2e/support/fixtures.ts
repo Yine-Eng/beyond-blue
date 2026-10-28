@@ -1,22 +1,41 @@
 import { test as base } from "@playwright/test";
-import { type TestRole, deleteTestUser, hasAdmin, sessionUserId, signInAs } from "./accounts";
+import {
+  type TestAccount,
+  type TestRole,
+  createTestUser,
+  deleteTestUser,
+  hasAdmin,
+  sessionUserId,
+  signInContext,
+} from "./accounts";
+
+type Setup = (userId: string) => Promise<void>;
 
 type Fixtures = {
-  /** Signs this test's browser in as a fresh test account; deleted again after the test. */
-  signIn: (role: TestRole, setup?: (userId: string) => Promise<void>) => Promise<string>;
+  /** Creates a throwaway account without signing the browser in; deleted after the test. */
+  account: (role: TestRole, setup?: Setup) => Promise<TestAccount>;
+  /** Signs this test's browser in as a fresh test account; deleted after the test. */
+  signIn: (role: TestRole, setup?: Setup) => Promise<string>;
   /** Runs after every test: deletes whichever test account the browser ended up signed in as. */
   cleanup: void;
 };
 
 export const test = base.extend<Fixtures>({
-  signIn: async ({ context, baseURL }, provide) => {
+  account: async ({}, provide) => {
     const created: string[] = [];
     await provide(async (role, setup) => {
-      const id = await signInAs(context, baseURL!, role, setup);
-      created.push(id);
-      return id;
+      const account = await createTestUser(role, setup);
+      created.push(account.id);
+      return account;
     });
     for (const id of created) await deleteTestUser(id);
+  },
+  signIn: async ({ context, baseURL, account }, provide) => {
+    await provide(async (role, setup) => {
+      const user = await account(role, setup);
+      await signInContext(context, baseURL!, user);
+      return user.id;
+    });
   },
   cleanup: [
     async ({ context }, provide) => {
