@@ -131,7 +131,7 @@ Runs on every PR into `develop` or `main` and on pushes to `main`.
 
 | Workflow | Job (status check name) | Steps |
 |---|---|---|
-| `CI` | `quality` | checkout → setup pnpm + Node 22 (cache) → install → lint → format:check → typecheck → unit tests → build |
+| `CI` | `quality` | checkout → setup Node 24 (npm cache) → install → lint → format:check → typecheck → unit tests → build |
 | `CI` | `e2e` | install Playwright browsers → start app → Playwright smoke (mobile + desktop) → upload report on failure |
 | `CI` | `db` (from M2) | start local Supabase → apply migrations → pgTAP RLS tests |
 | `PR title` | `conventional-title` | validates the PR title |
@@ -149,8 +149,8 @@ git switch develop && git pull --ff-only
 git switch -c release/v0.1.0
 
 # 2. Bump the version and generate the changelog (git-cliff reads Conventional Commits)
-pnpm version 0.1.0 --no-git-tag-version
-pnpm dlx git-cliff --tag v0.1.0 -o CHANGELOG.md
+npm version 0.1.0 --no-git-tag-version
+npx git-cliff --tag v0.1.0 -o CHANGELOG.md
 git add package.json CHANGELOG.md
 git commit -m "chore(release): v0.1.0"
 
@@ -164,7 +164,7 @@ gh pr merge --merge
 git switch main && git pull --ff-only
 git tag -a v0.1.0 -m "v0.1.0 · M0 Foundation"
 git push origin v0.1.0
-gh release create v0.1.0 --title "v0.1.0 · Foundation" --notes-file <(pnpm dlx git-cliff --latest --strip all)
+gh release create v0.1.0 --title "v0.1.0 · Foundation" --notes-file <(npx git-cliff --latest --strip all)
 
 # 5. Back-merge main into develop (develop is protected, so via PR)
 git switch -c chore/back-merge-v0.1.0 main

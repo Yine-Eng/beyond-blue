@@ -16,8 +16,8 @@ Beyond Blue must be mobile-first, installable, accessible, fast on low-end phone
 - **ESLint, Prettier, Husky, lint-staged, commitlint**.
 - **PWA:** `app/manifest.ts` plus a service worker for the offline shell (Serwist if it works with the bundler in the pinned Next.js version, otherwise a small hand-written service worker).
 - **Hosting:** Vercel Hobby (production from `main`, preview per PR) and Supabase Free.
-- **Runtime:** Node.js 22 LTS, pinned via `.nvmrc` and `engines`. Current Next.js releases need Node ≥ 20.9. The dev machine has Node 18.20 and needs an upgrade before scaffolding.
-- **Package manager:** pnpm (fast, strict dependency resolution, good CI caching).
+- **Runtime:** Node.js 24 LTS for development and CI (`.nvmrc`), with `"engines": { "node": ">=22" }` so Vercel and contributors on Node 22 still work. Current Next.js releases need Node ≥ 20.9, and Vercel is deprecating Node 20.
+- **Package manager:** npm (ships with Node, no extra tooling for future student maintainers).
 
 ## Consequences
 - One language end to end, typed from the database (generated types) to the UI.
@@ -29,4 +29,4 @@ Beyond Blue must be mobile-first, installable, accessible, fast on low-end phone
 - **Firebase:** weaker relational modelling and no SQL row-level policies for the reporting the staff dashboard needs.
 - **Remix / SvelteKit:** viable, but the brief specifies Next.js and the shadcn/ui ecosystem is strongest on React.
 - **Native apps (React Native / Expo):** app-store costs and review delays, and judges would need to install something. A PWA is a one-tap demo.
-- **npm instead of pnpm:** also fine. pnpm was chosen for speed and is easy to swap.
+- **pnpm:** faster installs, but npm keeps setup simplest for future student maintainers.

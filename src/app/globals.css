@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+/* Design tokens land in #7 (docs/design-system.md). */
+:root {
+  --background: #f6efe2;
+  --foreground: #0b1f4d;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: system-ui, sans-serif;
+}

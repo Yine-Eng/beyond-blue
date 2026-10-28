@@ -1,14 +1,29 @@
 # Beyond Blue: Roadmap
 
-> Status: **Draft for review**. After approval, `scripts/github-bootstrap.sh` creates the labels, milestones and issues below directly from this file. It is the single source of truth, so edit issues here first.
+> Status: **Approved** (PR #1). `scripts/github-bootstrap.sh` created the labels, milestones and issues (#2–#55) and the "Beyond Blue Roadmap" Projects board from this file. Edit issues here first, then on GitHub.
+
+## Delivery schedule (planned backwards from judging)
+
+**Submission: Thu 29 Oct 2026 · Judging: Fri 30 Oct 2026.** The size estimates below are normal-team estimates; the schedule compresses them, so the cut order is fixed in advance.
+
+| When | Milestone | Must-have for that slot |
+|---|---|---|
+| Tue 27 Oct (evening) | **M0** → `v0.1.0` | Scaffold, tooling, CI, tokens + fonts, scrapbook kit, app shell |
+| Wed 28 Oct (morning) | **M1** → `v0.2.0` | Full story site with the deck FAQ, demo CTA |
+| Wed 28 Oct (afternoon–night) | **M2** → `v0.3.0` | Supabase schema + RLS, curriculum seed, onboarding, Plan, task outputs, Profile, **Explore as Veronica** |
+| Thu 29 Oct (morning) | **M3 + M4** → `v0.4.0`, `v0.5.0` | Network + matching, switch pathway, Detour, Launch File + PDF, fund request + review |
+| Thu 29 Oct (midday) | **M6** → `v1.0.0` | PWA, a11y + Lighthouse pass, e2e smoke, README + QR, submit |
+| Only if time remains | **M5** | Staff dashboard, Day +100 |
+
+**Cut order if time runs short:** (1) stretch goals, (2) M5 (staff dashboard, Day +100), (3) M6 nice-to-haves (persona switcher, Lighthouse CI automation), keeping a manual Lighthouse run. Demo mode is never cut.
 
 ## How to read this
 
 - **Milestones** match CLAUDE.md §10. Each ends with a tagged release and a working demo.
 - **Estimates** (`size:*` labels): **XS** ≤ 1 h · **S** ≤ 3 h · **M** ≤ 1 day · **L** ≤ 2 days · **XL** > 2 days (split before starting).
 - **Priority:** **p0** must ship for the milestone · **p1** should ship · **p2** nice to have.
-- **Issue numbers:** GitHub numbers issues and PRs from one shared counter. The planning PR will take **#1**, so the scaffold issue will most likely be **#2** and its branch `feature/2-project-scaffold`. The bootstrap script prints the final number for every issue.
-- **Proposed change to §10 (needs your OK):** demo mode is critical for judging, so a **baseline "Explore as Veronica"** is pulled into M2. That way every milestone from M2 onwards is demoable by judges on a phone. M6 keeps the hardening work (cleanup job, staff demo, polish).
+- **Issue numbers:** GitHub numbers issues and PRs from one shared counter. The planning PR took **#1**, so issues run **#2–#55** in the order below (scaffold = #2, branch `feature/2-project-scaffold`).
+- **Approved change to §10:** a **baseline "Explore as Veronica"** is pulled into M2 so every milestone from M2 onwards is demoable by judges on a phone. M6 keeps the hardening work (cleanup job, staff demo, polish).
 
 ## Labels
 
@@ -36,18 +51,18 @@
 ## M0 · Foundation (v0.1.0)
 > Repo scaffold, tooling, CI, design tokens, fonts, layout shell, UI kit page, docs.
 
-#### Project scaffold: Next.js, TypeScript strict, Tailwind, pnpm
+#### Project scaffold: Next.js, TypeScript strict, Tailwind, npm
 <!-- labels: type:chore, area:infra, priority:p0, size:M -->
-**Description.** Create the Next.js App Router app with TypeScript strict mode, Tailwind CSS v4, ESLint and Prettier, using pnpm and Node 22 LTS.
+**Description.** Create the Next.js App Router app with TypeScript strict mode, Tailwind CSS v4, ESLint and Prettier, using npm and Node 24 LTS.
 
 **Acceptance criteria**
 - [ ] Next.js (latest stable, exact version pinned) with the `src/` layout from `docs/architecture.md` §2.3
 - [ ] `tsconfig` strict with `noUncheckedIndexedAccess`; path alias `@/*`
-- [ ] `.nvmrc` (22) and `engines` in `package.json`
+- [ ] `.nvmrc` (24) and `"engines": { "node": ">=22" }` in `package.json`
 - [ ] ESLint (Next + `jsx-a11y` + `@typescript-eslint` strict) and Prettier (with Tailwind plugin) configured
 - [ ] Scripts: `dev`, `build`, `start`, `lint`, `typecheck`, `format`, `format:check`
 - [ ] `.env.example` committed; `.env.local` git-ignored
-- [ ] `pnpm lint && pnpm typecheck && pnpm build` pass
+- [ ] `npm run lint && npm run typecheck && npm run build` pass
 
 **Estimate:** M
 
@@ -79,7 +94,7 @@
 **Description.** Run quality gates on every PR into `develop` and `main`.
 
 **Acceptance criteria**
-- [ ] Workflow `CI` with job `quality`: install (pnpm cache) → lint → format:check → typecheck → unit tests → build
+- [ ] Workflow `CI` with job `quality`: install (npm cache) → lint → format:check → typecheck → unit tests → build
 - [ ] Job `e2e`: Playwright smoke on chromium (mobile + desktop projects), uploads the report as an artifact on failure
 - [ ] Workflow `PR title` validates Conventional Commit PR titles (squash merges use the title)
 - [ ] Concurrency cancels superseded runs
@@ -260,8 +275,8 @@
 
 **Acceptance criteria**
 - [ ] `supabase/` folder with config, `migrations/` and `seed.sql`
-- [ ] Server and browser clients in `src/lib/supabase` using `@supabase/ssr`; service-role client guarded with `server-only`
-- [ ] `pnpm db:types` generates `database.types.ts`
+- [ ] Server and browser clients in `src/lib/supabase` using `@supabase/ssr`; clients use the publishable key (`NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`); the secret-key client is guarded with `server-only`
+- [ ] `npm run db:types` generates `database.types.ts`
 - [ ] CI starts local Supabase for integration and RLS tests
 - [ ] Keep-alive scheduled job documented to prevent free-tier pausing
 
@@ -365,6 +380,7 @@
 - [ ] Link: https only. Form: renders the curriculum `formId` (budget table, housing comparison, offer review, …) with Zod validation
 - [ ] Completion burst, optimistic progress update, replace/edit output
 - [ ] Rate limit on upload URL creation
+- [ ] Each area marks one key output (`is_key_output` in the curriculum) that a mentor or staff member can badge "Verified". The badge is optional and never blocks progress
 - [ ] Unit tests for output validation; e2e for completing one task of each type
 
 **Estimate:** L
