@@ -6,6 +6,8 @@ test.skip(!process.env.NEXT_PUBLIC_SUPABASE_URL, "Supabase env vars not configur
 
 // One demo session per viewport keeps the run inside the demo rate limits.
 test("explore as Veronica: plan, area drill-in and reset", async ({ page }) => {
+  // A long journey; give it room for real-network latency when run against the live site.
+  test.setTimeout(90_000);
   await page.goto("/");
   await page
     .getByRole("button", { name: /Try the demo as Veronica/ })
@@ -127,6 +129,7 @@ test("Detour Challenge, then switch Hired → Higher Education without losing wo
   await page.goto("/tasks/hired.wellness.detour-plan");
   await page.getByRole("link", { name: /Start the Detour Challenge/ }).click();
   await expect(page.getByRole("heading", { level: 1, name: "The Detour Challenge" })).toBeVisible();
+  await expect(page).toHaveTitle(/Detour Challenge/);
   await expectNoA11yViolations(page);
 
   const next = page.getByRole("button", { name: "Save and continue" });
