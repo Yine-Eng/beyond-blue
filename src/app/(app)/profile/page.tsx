@@ -1,4 +1,4 @@
-import { ArrowRight, LogOut, MapPin, Pencil, Repeat } from "lucide-react";
+import { ArrowRight, HandCoins, LogOut, MapPin, Pencil, Repeat } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -113,6 +113,11 @@ async function ProfileContent({ saved }: { saved: Promise<boolean> }) {
         <Button asChild variant="outline" className="bg-white">
           <Link href="/profile/edit">
             <Pencil aria-hidden="true" /> Edit profile
+          </Link>
+        </Button>
+        <Button asChild variant="ghost">
+          <Link href="/fund">
+            <HandCoins aria-hidden="true" /> Last Mile Fund
           </Link>
         </Button>
         <Button asChild variant="ghost">

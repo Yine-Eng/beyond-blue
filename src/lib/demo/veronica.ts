@@ -172,6 +172,8 @@ export async function seedVeronica(userId: string): Promise<void> {
   await admin.from("task_completions").delete().eq("student_id", userId);
   await admin.from("pathway_changes").delete().eq("student_id", userId);
   await admin.from("detour_plans").delete().eq("student_id", userId);
+  await admin.from("fund_requests").delete().eq("student_id", userId);
+  await admin.from("launch_files").delete().eq("student_id", userId);
   const now = Date.now();
   const { error: completionError } = await admin.from("task_completions").insert(
     COMPLETIONS.map((c, i) => ({

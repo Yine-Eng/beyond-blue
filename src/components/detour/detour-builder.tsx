@@ -262,8 +262,10 @@ function SupportList() {
           <strong>Counseling</strong> is free and confidential when a change feels like a lot.
         </li>
         <li>
-          <strong>Last Mile Fund</strong> covers small, verified costs tied to your next step, up to
-          $250 per request.
+          <Link href="/fund" className="font-semibold text-blue-700 underline underline-offset-4">
+            Last Mile Fund
+          </Link>{" "}
+          covers small, verified costs tied to your next step, up to $250 per request.
         </li>
       </ul>
     </aside>
