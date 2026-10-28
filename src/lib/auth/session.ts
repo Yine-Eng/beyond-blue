@@ -55,7 +55,7 @@ export async function requirePlan() {
       role === "mentor"
         ? "/mentor"
         : role === "staff" || role === "admin"
-          ? "/staff/fund"
+          ? "/staff"
           : "/onboarding",
     );
   }
