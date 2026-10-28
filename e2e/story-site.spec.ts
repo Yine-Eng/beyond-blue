@@ -58,6 +58,8 @@ test.describe("story site", () => {
 
   test("the alumni loop can be paused", async ({ page }) => {
     await page.goto("/");
+    // The loop control is a client component: let it hydrate before clicking.
+    await page.waitForLoadState("networkidle");
     const pause = page.getByRole("button", { name: "Pause the loop" });
     await pause.click();
     await expect(page.getByRole("button", { name: "Play the loop" })).toHaveAttribute(

@@ -2,12 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 import { DemoButton, StaffDemoButton } from "@/components/demo/demo-button";
+import { signOut } from "@/lib/actions/auth";
 
 export const metadata: Metadata = { title: "Explore as Veronica" };
 
 const ERRORS: Record<string, string> = {
   busy: "Lots of people are trying the demo right now. Please try again in a few minutes.",
   unavailable: "The demo couldn't start just now. Please try again.",
+  "signed-in": "Sign out to try the demo. You're signed in to your own account right now.",
 };
 
 async function DemoError({ searchParams }: Pick<PageProps<"/demo">, "searchParams">) {
@@ -15,12 +17,20 @@ async function DemoError({ searchParams }: Pick<PageProps<"/demo">, "searchParam
   const message = typeof error === "string" ? ERRORS[error] : undefined;
   if (!message) return null;
   return (
-    <p
-      role="alert"
-      className="bg-area-wellness rounded-lg px-4 py-3 text-sm font-semibold text-pink-700"
-    >
-      {message}
-    </p>
+    <div role="alert" className="bg-area-wellness rounded-lg px-4 py-3 text-sm text-pink-700">
+      <p className="font-semibold">{message}</p>
+      {error === "signed-in" && (
+        // Signing out here only ends this browser's session; the demo never replaces a real one.
+        <form action={signOut}>
+          <button
+            type="submit"
+            className="mt-1 inline-flex min-h-11 items-center font-semibold underline underline-offset-4"
+          >
+            Sign out
+          </button>
+        </form>
+      )}
+    </div>
   );
 }
 

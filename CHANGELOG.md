@@ -4,6 +4,16 @@ All notable changes to Beyond Blue are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/).
 
+## [1.1.1] - 2026-10-28
+
+### Bug fixes
+
+- **demo:** Switch between the Veronica and staff demos in one browser; hide the staff nav on the staff only page (#113)
+
+### Documentation
+
+- **repo:** v1.1.0 staff screenshots; stabilise the alumni loop test (#111)
+
 ## [1.1.0] - 2026-10-28
 
 ### Features
