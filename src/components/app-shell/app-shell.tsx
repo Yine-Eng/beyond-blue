@@ -6,7 +6,7 @@ import { BottomNav, SidebarNav } from "./app-nav";
 /** Authenticated app frame: sidebar on desktop, header + bottom tabs on phones. */
 export function AppShell({ children }: { children: ReactNode }) {
   return (
-    <div className="flex min-h-dvh flex-1">
+    <div className="flex min-h-dvh flex-1 overflow-x-clip">
       <a
         href="#main"
         className="bg-navy-900 sr-only z-50 rounded px-4 py-2 text-white focus:not-sr-only focus:fixed focus:top-3 focus:left-3"

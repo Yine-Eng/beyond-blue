@@ -20,7 +20,7 @@ export function BudgetSection() {
   return (
     <NotebookSection id="budget" labelledBy="budget-title">
       <div className="grid gap-10 lg:grid-cols-[1fr_1.7fr]">
-        <div>
+        <div className="min-w-0">
           <h2 id="budget-title" className="text-heading-xl text-navy-900 font-serif font-bold">
             {budgetNotes.title[0]} <span className="block">{budgetNotes.title[1]}</span>
           </h2>
@@ -53,7 +53,8 @@ export function BudgetSection() {
           </ul>
         </div>
 
-        <div>
+        {/* min-w-0 lets the table scroll inside its wrapper instead of widening the page. */}
+        <div className="min-w-0">
           <div aria-hidden="true" className="mb-4 flex h-4 overflow-hidden rounded-full">
             {BUDGET_LINES.map((line, i) => (
               <span
@@ -63,7 +64,14 @@ export function BudgetSection() {
               />
             ))}
           </div>
-          <div className="overflow-x-auto rounded-[var(--radius-card)] border">
+          <div
+            role="region"
+            aria-label="Budget table (scrolls sideways on small screens)"
+            // Scrollable regions must be keyboard-reachable (WCAG 2.1.1, axe scrollable-region-focusable).
+            // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+            tabIndex={0}
+            className="overflow-x-auto rounded-[var(--radius-card)] border"
+          >
             <table className="w-full min-w-[34rem] border-collapse text-left text-sm">
               <caption className="sr-only">
                 Beyond Blue pilot budget, totalling {formatUsd(BUDGET_TOTAL)}
