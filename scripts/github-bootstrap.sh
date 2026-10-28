@@ -121,8 +121,9 @@ tr -d '\r' <"$ROADMAP" | awk -v dir="$WORK" '
     file = sprintf("%s/issue-%03d", dir, n)
     print substr($0, 6) > file
     print milestone >> file
-    getline labels
-    if (labels !~ /^<!-- labels:/) { print "Missing labels line after: " $0 > "/dev/stderr"; exit 1 }
+    title = $0
+    while ((getline labels) > 0 && labels ~ /^[[:space:]]*$/) {}
+    if (labels !~ /^<!-- labels:/) { print "Missing labels line after: " title > "/dev/stderr"; exit 1 }
     sub(/^<!-- labels: */, "", labels); sub(/ *-->$/, "", labels)
     print labels >> file
     next
