@@ -18,8 +18,8 @@ function registerFonts(origin: string) {
     ],
   });
   Font.register({
-    family: "Playfair",
-    src: `${origin}/fonts/playfair-display-latin-700-normal.woff`,
+    family: "SourceSerif",
+    src: `${origin}/fonts/source-serif-4-latin-700-normal.woff`,
     fontWeight: 700,
   });
   Font.register({
@@ -53,11 +53,11 @@ const s = StyleSheet.create({
     color: palette["gold-400"],
   },
   title: { fontFamily: "Marker", fontSize: 30, marginTop: 6 },
-  name: { fontFamily: "Playfair", fontWeight: 700, fontSize: 18, marginTop: 12 },
+  name: { fontFamily: "SourceSerif", fontWeight: 700, fontSize: 18, marginTop: 12 },
   meta: { marginTop: 4, fontSize: 10 },
   section: { marginTop: 22 },
   sectionTitle: {
-    fontFamily: "Playfair",
+    fontFamily: "SourceSerif",
     fontWeight: 700,
     fontSize: 15,
     color: palette["navy-900"],
