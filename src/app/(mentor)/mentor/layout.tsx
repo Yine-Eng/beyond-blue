@@ -16,6 +16,12 @@ async function MentorGate({ children }: { children: ReactNode }) {
 export default function MentorLayout({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-dvh flex-col">
+      <a
+        href="#main"
+        className="bg-navy-900 sr-only z-50 rounded px-4 py-2 text-white focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+      >
+        Skip to content
+      </a>
       <header className="bg-burst flex flex-wrap items-center gap-4 px-4 py-3 sm:px-6">
         <Link href="/mentor" className="bg-navy-800 -rotate-1 rounded-sm px-3 py-1.5">
           <Wordmark />
