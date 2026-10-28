@@ -42,7 +42,7 @@ describe("formSchema", () => {
   it("validates select options", () => {
     const detour = formSchema("detour-plan");
     const base = {
-      planA: "Start at Peachtree",
+      planA: "Start at Halcyra",
       signs: "No contract",
       planB: "Call Career Services",
       minBudget: 2000,

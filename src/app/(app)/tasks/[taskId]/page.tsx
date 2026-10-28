@@ -1,4 +1,4 @@
-import { ArrowLeft, BadgeCheck, LifeBuoy } from "lucide-react";
+import { ArrowLeft, ArrowRight, BadgeCheck, LifeBuoy } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -6,6 +6,8 @@ import { Suspense } from "react";
 import { AREA_META, OUTPUT_LABEL } from "@/components/plan/area-meta";
 import { PlanSkeleton } from "@/components/plan/plan-skeleton";
 import { StatusChip } from "@/components/plan/status-chip";
+import { ShareToggle } from "@/components/tasks/share-toggle";
+import { Button } from "@/components/ui/button";
 import { TaskOutputForm } from "@/components/tasks/task-output-form";
 import type { FormId } from "@/content/curriculum";
 import { FORMS } from "@/content/curriculum";
@@ -37,7 +39,7 @@ async function TaskContent({ taskId }: { taskId: string }) {
     supabase.from("tasks").select("support").eq("id", task.id).single(),
     supabase
       .from("task_completions")
-      .select("output_url, output_path, output_data, completed_at")
+      .select("output_url, output_path, output_data, completed_at, shared_with_mentors")
       .eq("student_id", plan.user.id)
       .eq("task_id", task.id)
       .maybeSingle(),
@@ -86,6 +88,15 @@ async function TaskContent({ taskId }: { taskId: string }) {
         </p>
       )}
 
+      {task.formId === "detour-plan" && (
+        <Button asChild size="lg">
+          <Link href="/detour">
+            {completion ? "Revisit the Detour Challenge" : "Start the Detour Challenge"}{" "}
+            <ArrowRight aria-hidden="true" />
+          </Link>
+        </Button>
+      )}
+
       <section aria-labelledby="output-title">
         <h2 id="output-title" className="text-heading-md text-navy-900 mb-3 font-semibold">
           {completion ? "Your output" : "Complete this step"}
@@ -106,6 +117,11 @@ async function TaskContent({ taskId }: { taskId: string }) {
               : null
           }
         />
+        {completion && (
+          <div className="mt-4">
+            <ShareToggle taskId={task.id} initial={completion.shared_with_mentors} />
+          </div>
+        )}
       </section>
     </article>
   );

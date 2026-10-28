@@ -127,3 +127,20 @@ export async function undoTask(taskId: unknown): Promise<ActionResult<null>> {
     return ok(null);
   });
 }
+
+const shareSchema = z.object({ taskId: z.string().min(3).max(120), shared: z.boolean() });
+
+/** Shares (or stops sharing) an output with the student's accepted mentors. */
+export async function setOutputShared(input: unknown): Promise<ActionResult<null>> {
+  return withValidation(shareSchema, input, async ({ taskId, shared }) => {
+    const { user } = await requirePlan();
+    const supabase = await createSupabaseServerClient();
+    const { error } = await supabase
+      .from("task_completions")
+      .update({ shared_with_mentors: shared })
+      .eq("student_id", user.id)
+      .eq("task_id", taskId);
+    if (error) throw error;
+    return ok(null);
+  });
+}

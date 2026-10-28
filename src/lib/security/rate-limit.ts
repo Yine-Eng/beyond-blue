@@ -12,6 +12,7 @@ export const RATE_LIMITS = {
   magicLinkPerEmail: { max: 3, windowSeconds: 15 * 60 },
   magicLinkPerIp: { max: 10, windowSeconds: 15 * 60 },
   uploadUrlPerUser: { max: 30, windowSeconds: 60 * 60 },
+  connectionRequestsPerUser: { max: 10, windowSeconds: 60 * 60 },
 } as const satisfies Record<string, RateLimitRule>;
 
 /**

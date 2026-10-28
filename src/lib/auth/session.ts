@@ -49,6 +49,6 @@ export type StudentContext = Awaited<ReturnType<typeof getStudentContext>>;
 /** For app screens: signed in and onboarded, otherwise sends the student to onboarding. */
 export async function requirePlan() {
   const ctx = await getStudentContext();
-  if (!ctx.plan) redirect("/onboarding");
+  if (!ctx.plan) redirect(ctx.profile.role === "mentor" ? "/mentor" : "/onboarding");
   return { ...ctx, plan: ctx.plan };
 }

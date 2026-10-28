@@ -9,6 +9,7 @@ import { type PathwayId, getPathway } from "@/content/pathways";
 import { signOut } from "@/lib/actions/auth";
 import { requirePlan } from "@/lib/auth/session";
 import { palette, pathwayColors } from "@/lib/design/tokens";
+import { initials } from "@/lib/initials";
 
 export const metadata: Metadata = { title: "Profile" };
 
@@ -19,15 +20,6 @@ const TAG_TINTS = [
   "bg-area-network",
   "bg-area-wellness",
 ];
-
-function initials(name: string) {
-  return name
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0]!.toUpperCase())
-    .join("");
-}
 
 async function ProfileContent({ saved }: { saved: Promise<boolean> }) {
   const { profile, plan, cohort } = await requirePlan();
@@ -123,8 +115,10 @@ async function ProfileContent({ saved }: { saved: Promise<boolean> }) {
             <Pencil aria-hidden="true" /> Edit profile
           </Link>
         </Button>
-        <Button variant="ghost" disabled title="Switching pathways arrives in the next release">
-          <Repeat aria-hidden="true" /> Switch pathway
+        <Button asChild variant="ghost">
+          <Link href="/switch-pathway">
+            <Repeat aria-hidden="true" /> Switch pathway
+          </Link>
         </Button>
         <form action={signOut}>
           <Button type="submit" variant="ghost">
