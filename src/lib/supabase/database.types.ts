@@ -381,17 +381,275 @@ export type Database = {
           },
         ]
       }
+      connections: {
+        Row: {
+          id: string
+          match_reason: string | null
+          match_score: number | null
+          mentor_id: string
+          note: string | null
+          requested_at: string
+          responded_at: string | null
+          status: Database["public"]["Enums"]["connection_status"]
+          student_id: string
+        }
+        Insert: {
+          id?: string
+          match_reason?: string | null
+          match_score?: number | null
+          mentor_id: string
+          note?: string | null
+          requested_at?: string
+          responded_at?: string | null
+          status?: Database["public"]["Enums"]["connection_status"]
+          student_id: string
+        }
+        Update: {
+          id?: string
+          match_reason?: string | null
+          match_score?: number | null
+          mentor_id?: string
+          note?: string | null
+          requested_at?: string
+          responded_at?: string | null
+          status?: Database["public"]["Enums"]["connection_status"]
+          student_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "connections_mentor_id_fkey"
+            columns: ["mentor_id"]
+            isOneToOne: false
+            referencedRelation: "mentor_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connections_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      detour_plans: {
+        Row: {
+          answers: Json
+          completed_at: string | null
+          current_step: number
+          student_id: string
+          updated_at: string
+        }
+        Insert: {
+          answers?: Json
+          completed_at?: string | null
+          current_step?: number
+          student_id: string
+          updated_at?: string
+        }
+        Update: {
+          answers?: Json
+          completed_at?: string | null
+          current_step?: number
+          student_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "detour_plans_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mentor_notes: {
+        Row: {
+          connection_id: string
+          created_at: string
+          id: string
+          met_on: string
+          notes: string | null
+          topic: string
+        }
+        Insert: {
+          connection_id: string
+          created_at?: string
+          id?: string
+          met_on: string
+          notes?: string | null
+          topic: string
+        }
+        Update: {
+          connection_id?: string
+          created_at?: string
+          id?: string
+          met_on?: string
+          notes?: string | null
+          topic?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mentor_notes_connection_id_fkey"
+            columns: ["connection_id"]
+            isOneToOne: false
+            referencedRelation: "connections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mentor_profiles: {
+        Row: {
+          bio: string | null
+          capacity: number
+          city: string | null
+          created_at: string
+          display_name: string
+          employer: string | null
+          grad_school: string | null
+          grad_year: number | null
+          id: string
+          industry: string | null
+          is_available: boolean
+          is_seeded_fictional: boolean
+          journey_tags: string[]
+          last_active_at: string
+          pathways: string[]
+          role_title: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          bio?: string | null
+          capacity?: number
+          city?: string | null
+          created_at?: string
+          display_name: string
+          employer?: string | null
+          grad_school?: string | null
+          grad_year?: number | null
+          id?: string
+          industry?: string | null
+          is_available?: boolean
+          is_seeded_fictional?: boolean
+          journey_tags?: string[]
+          last_active_at?: string
+          pathways?: string[]
+          role_title: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          bio?: string | null
+          capacity?: number
+          city?: string | null
+          created_at?: string
+          display_name?: string
+          employer?: string | null
+          grad_school?: string | null
+          grad_year?: number | null
+          id?: string
+          industry?: string | null
+          is_available?: boolean
+          is_seeded_fictional?: boolean
+          journey_tags?: string[]
+          last_active_at?: string
+          pathways?: string[]
+          role_title?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mentor_profiles_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pathway_changes: {
+        Row: {
+          changed_at: string
+          completed_kept: number
+          credited_in_new: number
+          from_pathway_id: string
+          id: string
+          reason: string | null
+          student_id: string
+          to_pathway_id: string
+        }
+        Insert: {
+          changed_at?: string
+          completed_kept: number
+          credited_in_new: number
+          from_pathway_id: string
+          id?: string
+          reason?: string | null
+          student_id: string
+          to_pathway_id: string
+        }
+        Update: {
+          changed_at?: string
+          completed_kept?: number
+          credited_in_new?: number
+          from_pathway_id?: string
+          id?: string
+          reason?: string | null
+          student_id?: string
+          to_pathway_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pathway_changes_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
+      available_mentors: {
+        Args: never
+        Returns: {
+          active_mentees: number
+          bio: string
+          city: string
+          display_name: string
+          employer: string
+          grad_school: string
+          grad_year: number
+          id: string
+          industry: string
+          journey_tags: string[]
+          last_active_at: string
+          pathways: string[]
+          role_title: string
+        }[]
+      }
       check_rate_limit: {
         Args: { p_key: string; p_max: number; p_window_seconds: number }
         Returns: boolean
       }
+      network_stats: {
+        Args: never
+        Returns: { alumni: number; mentors: number; students_on_path: number }[]
+      }
+      switch_pathway: {
+        Args: { p_reason?: string; p_to: string }
+        Returns: Database["public"]["Tables"]["pathway_changes"]["Row"]
+      }
+      verify_output: { Args: { p_completion: string }; Returns: undefined }
     }
     Enums: {
+      connection_status: "pending" | "accepted" | "declined" | "withdrawn"
       output_type: "file" | "link" | "form"
       user_role: "student" | "mentor" | "staff" | "admin"
     }
@@ -521,6 +779,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      connection_status: ["pending", "accepted", "declined", "withdrawn"],
       output_type: ["file", "link", "form"],
       user_role: ["student", "mentor", "staff", "admin"],
     },

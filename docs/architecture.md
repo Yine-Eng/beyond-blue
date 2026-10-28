@@ -227,7 +227,8 @@ erDiagram
         timestamptz changed_at
     }
     mentor_profiles {
-        uuid user_id PK
+        uuid id PK
+        uuid user_id FK "null for fictional alumni"
         text display_name
         int grad_year
         text role_title
@@ -327,7 +328,7 @@ erDiagram
 ```
 
 ### 3.2 Notes on the model
-- **`mentors` / `mentor_profiles`:** a mentor is a `profiles` row with `role = 'mentor'` plus a `mentor_profiles` row. A separate `mentors` table would duplicate identity, so it is omitted. Seeded demo alumni are fictional and flagged with `is_seeded_fictional`.
+- **`mentors` / `mentor_profiles`:** a mentor is a `profiles` row with `role = 'mentor'` plus a `mentor_profiles` row linked by `user_id`. Connections reference `mentor_profiles.id`, so fictional alumni (no account, `user_id` null) work the same way. A separate `mentors` table would duplicate identity, so it is omitted. Seeded demo alumni are fictional and flagged with `is_seeded_fictional`.
 - **`student_plans`** holds the student's *current* pathway. The plan itself is derived: `tasks WHERE pathway_id = plan.pathway_id` plus the student's completions. Nothing is copied per student, so curriculum fixes reach everyone immediately and pathway switches are cheap.
 - **`task_completions`** is never deleted on a pathway switch (principle 5). `pathway_id_at_completion` labels the output in the Launch File.
 - **`equivalence_key`** links equivalent tasks across pathways (e.g. every pathway has a `budget-90` task in Financial Readiness). This is what lets a switch credit existing work.
