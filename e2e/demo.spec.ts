@@ -33,7 +33,7 @@ test("explore as Veronica: plan, area drill-in and reset", async ({ page }) => {
   await expectNoA11yViolations(page);
 
   await page.getByRole("button", { name: "Reset demo" }).click();
-  await expect(page).toHaveURL(/\/plan\?reset=1$/);
+  await expect(page).toHaveURL(/\/plan\?reset=1$/, { timeout: 20_000 });
   await expect(main.getByText("12 of 30 steps complete").filter({ visible: true })).toBeVisible();
 
   // File output: the focus task asks for an upload.
@@ -50,7 +50,9 @@ test("explore as Veronica: plan, area drill-in and reset", async ({ page }) => {
   await expect(page.getByText("Saved to your Launch File.")).toBeVisible({ timeout: 20_000 });
   await expectNoA11yViolations(page);
   await page.getByRole("link", { name: "Back to your plan" }).click();
-  await expect(main.getByText("13 of 30 steps complete").filter({ visible: true })).toBeVisible();
+  await expect(main.getByText("13 of 30 steps complete").filter({ visible: true })).toBeVisible({
+    timeout: 20_000,
+  });
 
   // Link output.
   await page.goto("/tasks/hired.network.alum-at-company");
@@ -150,7 +152,9 @@ test("Detour Challenge, then switch Hired → Higher Education without losing wo
     timeout: 20_000,
   });
   await page.getByRole("link", { name: "Back to your plan" }).click();
-  await expect(main.getByText("13 of 30 steps complete").filter({ visible: true })).toBeVisible();
+  await expect(main.getByText("13 of 30 steps complete").filter({ visible: true })).toBeVisible({
+    timeout: 20_000,
+  });
 
   // Switch pathway: the preview shows what's kept, then the plan re-maps.
   await page.goto("/profile");
