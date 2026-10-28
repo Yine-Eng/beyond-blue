@@ -4,6 +4,14 @@ All notable changes to Beyond Blue are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/).
 
+## [0.4.0] - 2026-10-28
+
+### Features
+
+- **network:** Add mentor schema, fictional alumni and transparent matching (#85)
+- **network:** Add network screen, connection requests and mentor inbox (#86)
+- **pathways:** Switch pathway and the Detour Challenge (#87)
+
 ## [0.3.0] - 2026-10-28
 
 ### Features
