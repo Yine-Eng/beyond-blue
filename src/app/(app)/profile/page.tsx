@@ -115,8 +115,10 @@ async function ProfileContent({ saved }: { saved: Promise<boolean> }) {
             <Pencil aria-hidden="true" /> Edit profile
           </Link>
         </Button>
-        <Button variant="ghost" disabled title="Switching pathways arrives in the next release">
-          <Repeat aria-hidden="true" /> Switch pathway
+        <Button asChild variant="ghost">
+          <Link href="/switch-pathway">
+            <Repeat aria-hidden="true" /> Switch pathway
+          </Link>
         </Button>
         <form action={signOut}>
           <Button type="submit" variant="ghost">
