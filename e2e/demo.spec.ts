@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./support/fixtures";
 import { expectNoA11yViolations } from "./a11y";
 
 // Needs a real Supabase project (local .env.local, or GitHub Actions secrets in CI).
