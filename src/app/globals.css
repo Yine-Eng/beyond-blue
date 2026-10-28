@@ -165,6 +165,9 @@
   }
   body {
     @apply bg-background text-foreground;
+    /* Scrapbook tape and doodles overhang their cards; never let them cause sideways scroll.
+       `clip` (unlike `hidden`) doesn't create a scroll container, so sticky headers still work. */
+    overflow-x: clip;
   }
   button:not(:disabled),
   [role="button"]:not(:disabled) {
