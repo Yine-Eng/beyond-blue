@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./support/fixtures";
 import { expectNoA11yViolations } from "./a11y";
 
 // Needs a real Supabase project (local .env.local, or GitHub Actions secrets in CI).
@@ -6,6 +6,8 @@ test.skip(!process.env.NEXT_PUBLIC_SUPABASE_URL, "Supabase env vars not configur
 
 // One demo session per viewport keeps the run inside the demo rate limits.
 test("explore as Veronica: plan, area drill-in and reset", async ({ page }) => {
+  // A long journey; give it room for real-network latency when run against the live site.
+  test.setTimeout(90_000);
   await page.goto("/");
   await page
     .getByRole("button", { name: /Try the demo as Veronica/ })
@@ -31,7 +33,7 @@ test("explore as Veronica: plan, area drill-in and reset", async ({ page }) => {
   await expectNoA11yViolations(page);
 
   await page.getByRole("button", { name: "Reset demo" }).click();
-  await expect(page).toHaveURL(/\/plan\?reset=1$/);
+  await expect(page).toHaveURL(/\/plan\?reset=1$/, { timeout: 20_000 });
   await expect(main.getByText("12 of 30 steps complete").filter({ visible: true })).toBeVisible();
 
   // File output: the focus task asks for an upload.
@@ -48,7 +50,9 @@ test("explore as Veronica: plan, area drill-in and reset", async ({ page }) => {
   await expect(page.getByText("Saved to your Launch File.")).toBeVisible({ timeout: 20_000 });
   await expectNoA11yViolations(page);
   await page.getByRole("link", { name: "Back to your plan" }).click();
-  await expect(main.getByText("13 of 30 steps complete").filter({ visible: true })).toBeVisible();
+  await expect(main.getByText("13 of 30 steps complete").filter({ visible: true })).toBeVisible({
+    timeout: 20_000,
+  });
 
   // Link output.
   await page.goto("/tasks/hired.network.alum-at-company");
@@ -127,6 +131,7 @@ test("Detour Challenge, then switch Hired → Higher Education without losing wo
   await page.goto("/tasks/hired.wellness.detour-plan");
   await page.getByRole("link", { name: /Start the Detour Challenge/ }).click();
   await expect(page.getByRole("heading", { level: 1, name: "The Detour Challenge" })).toBeVisible();
+  await expect(page).toHaveTitle(/Detour Challenge/);
   await expectNoA11yViolations(page);
 
   const next = page.getByRole("button", { name: "Save and continue" });
@@ -147,7 +152,9 @@ test("Detour Challenge, then switch Hired → Higher Education without losing wo
     timeout: 20_000,
   });
   await page.getByRole("link", { name: "Back to your plan" }).click();
-  await expect(main.getByText("13 of 30 steps complete").filter({ visible: true })).toBeVisible();
+  await expect(main.getByText("13 of 30 steps complete").filter({ visible: true })).toBeVisible({
+    timeout: 20_000,
+  });
 
   // Switch pathway: the preview shows what's kept, then the plan re-maps.
   await page.goto("/profile");

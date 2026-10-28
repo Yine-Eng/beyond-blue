@@ -3,16 +3,34 @@ import { redirect } from "next/navigation";
 import { cache } from "react";
 import type { FundCategory, FundStatus } from "@/content/fund";
 import { getStudentContext } from "@/lib/auth/session";
+import { demoFundBalance, demoFundRequests } from "@/lib/demo/staff";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 const REQUEST_COLUMNS =
   "id, category, amount_cents, next_step, justification, document_path, needed_by, status, rubric, reviewer_notes, submitted_at, decided_at, updated_at";
 
-/** Staff and admins only; everyone else goes back to their own screens. */
-export const requireStaff = cache(async () => {
+/**
+ * Who is signed in and whether they're staff. The role always comes from the database (never a
+ * JWT claim), so a role change applies on the next request with no new sign-in, and a role check
+ * never touches the session.
+ */
+export const getStaffAccess = cache(async () => {
   const ctx = await getStudentContext();
-  if (ctx.profile.role !== "staff" && ctx.profile.role !== "admin") redirect("/plan");
-  return ctx;
+  // A staff demo is an anonymous demo session; it sees generated fictional data only and never
+  // gets the staff role, so RLS still gives it nothing real.
+  const isDemo = ctx.profile.is_demo && ctx.user.demoRole === "staff";
+  const isStaff = ctx.profile.role === "staff" || ctx.profile.role === "admin" || isDemo;
+  return { ...ctx, isStaff, isDemo };
+});
+
+/**
+ * Staff and admins only. The staff layout already shows non-staff a "Staff only" page without
+ * rendering the route, so this is defence in depth for data loaders and Server Actions.
+ */
+export const requireStaff = cache(async () => {
+  const access = await getStaffAccess();
+  if (!access.isStaff) redirect("/staff");
+  return access;
 });
 
 export async function getFundBalance() {
@@ -44,7 +62,17 @@ export type QueueFilters = { status?: FundStatus; category?: FundCategory };
 
 /** Review queue, oldest first. Demo sessions never reach the real queue. */
 export async function getFundQueue(filters: QueueFilters) {
-  await requireStaff();
+  const access = await requireStaff();
+  if (access.isDemo) {
+    const requests = demoFundRequests(access.user.id)
+      .filter(
+        (r) =>
+          (!filters.status || r.status === filters.status) &&
+          (!filters.category || r.category === filters.category),
+      )
+      .sort((a, b) => a.submitted_at.localeCompare(b.submitted_at));
+    return { requests, balance: demoFundBalance(access.user.id), isDemo: true };
+  }
   const supabase = await createSupabaseServerClient();
   let query = supabase
     .from("fund_requests")
@@ -57,12 +85,17 @@ export async function getFundQueue(filters: QueueFilters) {
   if (filters.category) query = query.eq("category", filters.category);
   const [requestsRes, balance] = await Promise.all([query, getFundBalance()]);
   if (requestsRes.error) throw requestsRes.error;
-  return { requests: requestsRes.data, balance };
+  return { requests: requestsRes.data, balance, isDemo: false };
 }
 
 /** One request with the student's basics and a short-lived link to the document. */
 export async function getFundRequestForReview(id: string) {
-  await requireStaff();
+  const access = await requireStaff();
+  if (access.isDemo) {
+    const request = demoFundRequests(access.user.id).find((r) => r.id === id);
+    if (!request) return null;
+    return { request, documentUrl: null, balance: demoFundBalance(access.user.id), isDemo: true };
+  }
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase
     .from("fund_requests")
@@ -81,5 +114,5 @@ export async function getFundRequestForReview(id: string) {
     documentUrl = signed?.signedUrl ?? null;
   }
   const balance = await getFundBalance();
-  return { request: data, documentUrl, balance };
+  return { request: data, documentUrl, balance, isDemo: false };
 }

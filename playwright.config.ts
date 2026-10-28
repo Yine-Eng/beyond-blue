@@ -24,7 +24,16 @@ export default defineConfig({
   use: {
     baseURL,
     trace: "on-first-retry",
-    extraHTTPHeaders: { "x-forwarded-for": clientIp },
+    extraHTTPHeaders: {
+      "x-forwarded-for": clientIp,
+      // Vercel previews sit behind Deployment Protection; this lets e2e verify a preview URL.
+      ...(process.env.PLAYWRIGHT_BASE_URL && process.env.VERCEL_AUTOMATION_BYPASS_SECRET
+        ? {
+            "x-vercel-protection-bypass": process.env.VERCEL_AUTOMATION_BYPASS_SECRET,
+            "x-vercel-set-bypass-cookie": "true",
+          }
+        : {}),
+    },
   },
   projects: [
     {

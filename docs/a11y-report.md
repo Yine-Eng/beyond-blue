@@ -15,8 +15,8 @@
 | Story site | `/` (whole page), `/sign-in`, `/sign-in?error=link`, `/offline` |
 | Student app (demo as Veronica) | `/plan`, `/plan/financial`, `/tasks/[id]` (file, link and form outputs), `/network`, `/profile`, `/detour`, `/switch-pathway`, `/launch-file`, `/fund` |
 | UI kit | `/dev/ui` (every component and scrapbook element) |
-
-**Not yet covered automatically:** the mentor area (`/mentor`) and the staff area (`/staff/fund`). Both need a real signed-in mentor or staff account, which CI doesn't have. They use the same primitives (shadcn/Radix fields, buttons, radio groups) and the same tokens as the covered screens.
+| Mentor and staff areas | `/mentor`, `/mentor/profile`, `/staff`, `/staff/fund`, `/staff/fund/[id]`, the Staff only page, and the staff demo. Each runs as a throwaway mentor or staff account that's deleted after the test |
+| Graduates | `/day-plus-100` |
 
 ## Fixes made during the build
 
@@ -26,6 +26,7 @@
 | Focus was hard to see on the royal-blue backgrounds | Global `:focus-visible` ring: 3 px gold outline with a 2 px navy inner ring, which works on both paper and blue |
 | Loading skeletons used `aria-label` on a plain `div` (axe: `aria-prohibited-attr`) | Skeletons are now `role="status"` with `aria-busy`, and they announce loading |
 | Axe sometimes ran before Next streamed in `<title>` after client navigation (`document-title`) | The test helper waits for a non-empty title. Every page has a title (`%s · Beyond Blue`) |
+| The dashboard's tables scroll sideways on phones but weren't keyboard-reachable (axe: `scrollable-region-focusable`) | Each is a labelled region with `tabindex="0"` |
 | Hidden previous pages kept by Next's activity cache confused label lookups in tests | Tests target visible fields. Each live page still has unique labels |
 | The budget table widened the page on phones | It scrolls inside its own container, with a horizontal-overflow test at every viewport |
 
@@ -43,4 +44,3 @@
 
 - A manual **VoiceOver (iOS Safari)** and **TalkBack (Android Chrome)** pass on the four core screens (Home, Plan, Network, Profile) and the Detour Challenge.
 - A full keyboard-only walkthrough of the mentor and staff areas.
-- Axe coverage for `/mentor` and `/staff/fund` once CI has seeded mentor and staff test accounts.

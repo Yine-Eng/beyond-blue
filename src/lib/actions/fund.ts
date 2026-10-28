@@ -79,7 +79,11 @@ export async function submitFundRequest(
 /** Staff decision on a request: rubric, note, status. The RPC enforces balance and audit. */
 export async function decideFundRequest(input: unknown): Promise<ActionResult<null>> {
   return withValidation(fundDecisionSchema, input, async ({ id, status, rubric, note }) => {
-    await requireStaff();
+    const access = await requireStaff();
+    if (access.isDemo)
+      return fail(
+        "This is the staff demo, so decisions aren't saved. In the pilot, this records the decision, notifies the student and writes the audit log.",
+      );
     const supabase = await createSupabaseServerClient();
     const { error } = await supabase.rpc("decide_fund_request", {
       p_id: id,

@@ -58,6 +58,7 @@ export const config = {
     "/switch-pathway/:path*",
     "/detour/:path*",
     "/fund/:path*",
+    "/day-plus-100/:path*",
     "/staff/:path*",
     "/auth/:path*",
     "/sign-in",

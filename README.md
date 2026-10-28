@@ -14,6 +14,8 @@ Team Northbound · Disney on the Yard Innovation Challenge 2026 · Bluefield Sta
 
 Open it on your phone, then tap **Try the demo as Veronica**. You don't need to sign up. Each demo is private to you and is deleted after 24 hours.
 
+To see the program team's side, tap **View as staff (demo)** below the main buttons. It opens the cohort dashboard, at-risk students, Day +100 insights and the Last Mile Fund queue for a fictional pilot cohort.
+
 Add it to your home screen to use it like an app (Android: *Install*; iPhone: *Share → Add to Home Screen*).
 
 </td>
@@ -48,7 +50,8 @@ Add it to your home screen to use it like an app (Android: *Install*; iPhone: *S
 | **Detour Challenge** | A five-step "what if plan A changes?" backup plan with prompts for each pathway. |
 | **Launch File** | Everything you've built in six sections, downloadable as a branded **PDF**. |
 | **Last Mile Fund** | Request a small, capped micro-grant ($250) for a cost tied to a real next step. Staff review every request with the same four-question rubric. |
-| **Mentors and staff** | Mentors accept requests, log conversations and verify shared outputs. Staff work a fair, audited fund review queue. |
+| **Mentors and staff** | Mentors accept requests, log conversations and verify shared outputs. Staff get a cohort dashboard (progress by pathway and readiness area, students behind the countdown, fund summary) and a fair, audited fund review queue. |
+| **Day +100** | Graduates check in 100 days after graduation. Staff see the results as counts and percentages only, with groups under five hidden. |
 
 Five pathways: **Hired · Job Search · Higher Education · Entrepreneurship · Still Deciding.** All alumni, employers and students in the demo are fictional.
 
