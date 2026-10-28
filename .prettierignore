@@ -11,3 +11,6 @@ deck/
 CLAUDE.md
 AGENTS.md
 *.md
+
+# OG image font (OFL licence text is not code)
+src/app/_og/
