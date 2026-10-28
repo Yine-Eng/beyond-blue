@@ -1,161 +1,162 @@
 # Beyond Blue: Design System
 
-> Status: **Draft for review**. Palette values are approximations sampled from the pitch deck and should be fine-tuned against the deck file before M0 ships.
+> Status: **Implemented in M0 (#7)**. Palette values were sampled from the exported deck slides (27 Oct 2026). Code source of truth: [`src/lib/design/tokens.ts`](../src/lib/design/tokens.ts), mirrored in [`src/app/globals.css`](../src/app/globals.css). A unit test enforces every contrast pair below and keeps CSS and TS in sync.
 
 ## 1. Principles
 
-1. **Scrapbook outside, notebook inside.** Hero sections, headers, empty states and celebrations use the full scrapbook treatment (torn cream paper on royal blue, tape, spiral edges, doodles). Working screens (Plan, Network, forms) stay clean and calm like the slide 7 mockups: cream cards, clear type, one accent per area.
+1. **Scrapbook outside, notebook inside.** Hero sections, headers, empty states and celebrations use the full scrapbook treatment: torn paper on a royal-blue sunburst, tape, spiral edges, doodles. Working screens (Plan, Network, forms) stay clean and calm like the slide 7 mockups, with an off-white canvas, white cards, navy serif titles and soft area tints.
 2. **Every decoration is optional.** Tape, doodles and torn edges are `aria-hidden` and never carry meaning. Removing them must not break comprehension.
-3. **Marker for feeling, sans for doing.** Handwritten and display faces are for short headlines only. Anything a student has to read or act on uses Inter.
+3. **Marker for feeling, sans for doing.** Script, marker and handwritten faces are for short headlines and labels only. Anything a student has to read or act on uses Inter.
 4. **Color means something.** Each pathway and each readiness area owns one accent, used consistently across cards, chips, progress and the Launch File.
 5. **Celebrate verified action.** Motion is reserved for real progress: completing a task, finishing an area, reaching Day 0.
 
 ## 2. Color
 
-### 2.1 Core palette
+### 2.1 Palette (sampled from the deck)
 
-| Token | Hex | Use |
-|---|---|---|
-| `navy-900` | `#0B1F4D` | Headings and primary text on cream, primary buttons |
-| `royal-700` | `#123C8C` | App background (with subtle radial burst), nav |
-| `blue-500` | `#3E7BD9` | "Blue" in the logo, Hired accent fill, decorative |
-| `blue-200` | `#BFD7F5` | Soft blue cards, Relocation area tint |
-| `cream-50` | `#F6EFE2` | Paper / card surface |
-| `cream-200` | `#EADFC8` | Paper shadow, edges, dividers |
-| `gold-400` | `#F6C445` | Highlights, countdown chips, focus ring, Entrepreneurship |
-| `orange-500` | `#F26A2E` | Emphasis fills, CTAs (with navy text), Job Search |
-| `green-400` | `#7FCB8A` | Higher Education, success states |
-| `purple-400` | `#A98BE0` | Still Deciding |
-| `pink-300` | `#F4A9B8` | Career Readiness card |
-| `ink-900` | `#1A1A1A` | Body text |
-
-### 2.2 Text-safe companions (added for WCAG AA)
-
-The bright accents fail AA as small text on cream, so each gets a darker companion used **only for text and icons on light surfaces**.
-
-| Token | Hex | On `cream-50` | On white | Replaces for text |
-|---|---|---|---|---|
-| `blue-700` | `#2A5DB0` | 5.58 | 6.38 | `blue-500` (links) |
-| `orange-700` | `#A8400F` | 5.39 | 6.17 | `orange-500` |
-| `green-700` | `#256B34` | 5.68 | 6.50 | `green-400` |
-| `purple-700` | `#6B4FB0` | 5.45 | 6.23 | `purple-400` |
-| `gold-800` | `#7A5C00` | 5.47 | 6.25 | `gold-400` |
-
-### 2.3 Contrast checks (computed, WCAG 2.1 relative luminance)
-
-| Foreground on background | Ratio | Normal text (4.5) | Large text / UI (3.0) |
+| Token | Hex | Sampled from | Use |
 |---|---|---|---|
-| `ink-900` on `cream-50` | 15.22 | ✅ | ✅ |
-| `navy-900` on `cream-50` | 13.94 | ✅ | ✅ |
-| `navy-900` on `cream-200` | 12.06 | ✅ | ✅ |
-| white on `navy-900` | 15.94 | ✅ | ✅ |
-| `cream-50` on `royal-700` | 8.95 | ✅ | ✅ |
-| white on `royal-700` | 10.24 | ✅ | ✅ |
-| `gold-400` on `royal-700` | 6.29 | ✅ | ✅ |
-| `gold-400` on `navy-900` | 9.79 | ✅ | ✅ |
-| `blue-200` on `royal-700` | 6.95 | ✅ | ✅ |
-| `green-400` on `royal-700` | 5.27 | ✅ | ✅ |
-| `navy-900` on `gold-400` | 9.79 | ✅ | ✅ |
-| `navy-900` on `pink-300` | 8.51 | ✅ | ✅ |
-| `navy-900` on `green-400` | 8.21 | ✅ | ✅ |
-| `navy-900` on `blue-200` | 10.82 | ✅ | ✅ |
-| `navy-900` on `purple-400` | 5.66 | ✅ | ✅ |
-| `navy-900` on `orange-500` | 5.22 | ✅ | ✅ |
-| `navy-900` on `blue-500` | 3.83 | ❌ | ✅ large only |
-| white on `blue-500` | 4.17 | ❌ | ✅ large only |
-| `blue-500` on `cream-50` | 3.64 | ❌ | ✅ large only |
-| `orange-500` on `royal-700` | 3.35 | ❌ | ✅ large only |
-| white on `orange-500` | 3.05 | ❌ | ✅ large only (avoid) |
-| `orange-500` on `cream-50` | 2.67 | ❌ | ❌ decorative only |
-| `blue-500` on `royal-700` | 2.46 | ❌ | ❌ decorative only |
+| `navy-900` | `#0A2D73` | Slide 7 buttons, progress bar | Headings, primary buttons, progress |
+| `navy-950` | `#0B1F4D` | — (brief) | Deepest text, rarely used |
+| `navy-800` | `#1F385E` | Torn navy paper behind the logo | Dark paper panels |
+| `royal-700` | `#174380` | Slide backgrounds | Background blue |
+| `royal-500` | `#2B5494` | Background sunburst rays | Sunburst rays |
+| `blue-500` | `#3D85D3` | "ALUMNI LOOP", "LAST" | Accent blue, decorative fills |
+| `blue-300` | `#A4CCF8` | "Blue" in the logo | Logo, highlights on navy |
+| `blue-200` | `#B8D7EA` | Label tape | Chips, Hired fill |
+| `blue-100` | `#D2E3F3` | "Built to Last" cards | Soft blue cards |
+| `paper` | `#FCFAF4` | Slide 7 app canvas | App background |
+| `cream-50` | `#F3ECE0` | Notebook paper | Paper cards, hero paper |
+| `cream-100` | `#F0E9DB` | "Beyond" in the logo | Logo cream |
+| `cream-200` | `#E4D4B0` | Kraft paper | Edges, shadows, kraft scraps |
+| `gold-400` | `#F7D685` | Day 75 / 25 circles | Highlights, countdown chips, focus ring, Entrepreneurship |
+| `gold-500` | `#E5B54F` | Marker underline | Underline strokes, doodles |
+| `orange-500` | `#FF6722` | "PERSONALIZE", "CONNECT" | Emphasis headings (large), CTAs, Job Search |
+| `green-400` | `#7FCB8A` | — (brief) | Higher Education, success |
+| `purple-400` | `#A98BE0` | — (brief) | Still Deciding |
+| `pink-300` | `#F8BAC3` | Pink label tape | Labels |
+| `ink-900` | `#1A1A1A` | — | Body text |
+| `ink-600` | `#4A4F5C` | — | Secondary text |
+| `danger` | `#B42318` | — | Errors |
+
+**Area tints** (slide 7 Prepare screen): `area-career` `#EEF5FC` · `area-financial` `#FBF3D8` · `area-relocation` `#E9F6F3` · `area-network` `#F3ECFA` · `area-wellness` `#FAE9F0` · `success-50` `#EAF7EE` (status card).
+
+> The brief proposed a pink Career card. The deck's app mockup uses a blue tint for Career and pink for Wellness, and the app follows the mockup. The timeline slide's coloured label tapes stay as decorative tape on the story site.
+
+### 2.2 Text-safe companions
+
+The bright accents fail AA as small text, so each has a darker companion used **only for text and icons on light surfaces**.
+
+| Token | Hex | On `paper` | Replaces for text |
+|---|---|---|---|
+| `blue-700` | `#245FA8` | 6.14 | `blue-500` (links) |
+| `orange-700` | `#B23F0C` | 5.57 | `orange-500` |
+| `green-700` | `#256B34` | 6.23 | `green-400` |
+| `purple-700` | `#6B4FB0` | 5.97 | `purple-400` |
+| `gold-800` | `#7A5C00` | 5.99 | `gold-400` |
+| `pink-700` | `#A3305A` | ≥ 4.5 on `area-wellness` | `pink-300` |
+| `teal-700` | `#1F6F5E` | ≥ 4.5 on `area-relocation` | — |
+
+### 2.3 Contrast rules (enforced by `src/lib/design/tokens.test.ts`)
+
+| Foreground on background | Ratio | Result |
+|---|---|---|
+| `ink-900` on `paper` | 16.67 | ✅ AA |
+| `navy-900` on `paper` | 12.30 | ✅ AA |
+| `navy-900` on `cream-50` | 10.93 | ✅ AA |
+| white on `navy-900` | 12.84 | ✅ AA |
+| `cream-50` on `royal-700` | 8.31 | ✅ AA |
+| `gold-400` on `royal-700` | 6.93 | ✅ AA |
+| `blue-300` on `navy-800` | 7.04 | ✅ AA |
+| `navy-900` on every area tint | ≥ 10.99 | ✅ AA |
+| `ink-900` on `orange-500` | ≈ 6.0 | ✅ AA (orange CTA text) |
+| `navy-900` on `purple-400` | 4.56 | ✅ AA (just) |
+| `navy-900` on `orange-500` | 4.41 | ❌ use `ink-900` |
+| white on `orange-500` | 2.91 | ❌ never |
+| `orange-500` on `paper` | 2.79 | ❌ large display text and decoration only |
+| `blue-500` on `paper` | 3.66 | ❌ large text only; use `blue-700` |
+| input border `#8F8778` on `paper` | 3.41 | ✅ non-text 3:1 |
 
 **Rules that follow:**
-- Orange CTAs use **navy text** (5.22), never white.
-- Links on cream use `blue-700`. Links on royal use `cream-50` with an underline.
-- Hired-accent chips use `blue-200` fill with navy text. `blue-500` is a fill or border, never a small-text background.
-- The "Blue" in the logo (`blue-500` on cream) is display-size and decorative (the logo has an accessible name).
-- The focus ring is `gold-400`, 3 px, with a 2 px `navy-900` offset, which stays visible on both cream and royal.
+- Orange CTAs (`Button variant="accent"`) use **ink text**, never white or navy.
+- Links on light surfaces use `blue-700`, underlined. Links on royal use `cream-50`, underlined.
+- `orange-500` headings ("PERSONALIZE") are display-size only (≥ 24 px).
+- **Focus ring:** 3 px `gold-400` outline with a 2 px `navy-900` inner ring. The navy ring carries the contrast on light paper and the gold on blue backgrounds. It's applied globally with `:focus-visible`, so it overrides component-level `outline-none`.
 
-### 2.4 Semantic tokens
+### 2.4 Semantic tokens (shadcn/ui)
 
-```css
-:root {
-  --bg-app: var(--royal-700);
-  --bg-surface: var(--cream-50);
-  --bg-surface-muted: var(--cream-200);
-  --text-primary: var(--ink-900);
-  --text-heading: var(--navy-900);
-  --text-on-dark: var(--cream-50);
-  --text-link: var(--blue-700);
-  --action-primary: var(--navy-900);   /* text: cream-50 */
-  --action-accent: var(--orange-500);  /* text: navy-900 */
-  --success: var(--green-400);         /* text companion: green-700 */
-  --warning: var(--gold-400);          /* text companion: gold-800 */
-  --danger: #B42318;                   /* 5.75:1 on cream */
-  --focus-ring: var(--gold-400);
-}
-```
+| Semantic | Maps to |
+|---|---|
+| `background` / `foreground` | `paper` / `ink-900` |
+| `card`, `popover` | white / `ink-900` |
+| `primary` / `primary-foreground` | `navy-900` / white |
+| `secondary` / `secondary-foreground` | `blue-100` / `navy-900` |
+| `muted`, `accent` | `cream-50` |
+| `muted-foreground` | `ink-600` |
+| `destructive` | `danger` |
+| `border` / `input` / `ring` | `#DCD3C1` / `#8F8778` / `navy-900` |
 
-Defined once in `src/app/globals.css` and exposed to Tailwind v4 through `@theme`, so classes like `bg-cream-50`, `text-navy-900` and `ring-focus` work. Dark mode is a stretch goal; the token layer makes it a variable swap.
+The MVP is light-only (dark mode is a stretch goal); the semantic layer makes it a variable swap later.
 
 ### 2.5 Pathway and area accents
 
-| Pathway | Fill | Text on light | Chip |
+| Pathway | Fill | Text on fill | Text on light |
 |---|---|---|---|
-| Hired | `blue-500` | `blue-700` | `blue-200` bg, navy text |
-| Job Search | `orange-500` | `orange-700` | `orange-500` bg, navy text |
-| Higher Education | `green-400` | `green-700` | `green-400` bg, navy text |
-| Entrepreneurship | `gold-400` | `gold-800` | `gold-400` bg, navy text |
-| Still Deciding | `purple-400` | `purple-700` | `purple-400` bg, navy text |
+| Hired | `blue-200` | `navy-900` | `blue-700` |
+| Job Search | `orange-500` | `ink-900` | `orange-700` |
+| Higher Education | `green-400` | `navy-900` | `green-700` |
+| Entrepreneurship | `gold-400` | `navy-900` | `gold-800` |
+| Still Deciding | `purple-400` | `navy-900` | `purple-700` |
 
-| Readiness area | Milestone | Card color | Icon (lucide) |
-|---|---|---|---|
-| Career Readiness | Day 100 | `pink-300` | `Briefcase` |
-| Financial Readiness | Day 75 | `gold-400` | `PiggyBank` |
-| Relocation & Life Logistics | Day 50 | `blue-200` | `MapPin` |
-| Network & Mentorship | Day 25 | `green-400` | `Users` |
-| Wellness & Detour Planning | Day 0 | `purple-400` | `Compass` |
-
-All area cards carry navy text (≥ 5.66:1 on every fill).
+| Readiness area | Milestone (opens) | Card tint | Accent text / icon | Icon (lucide) |
+|---|---|---|---|---|
+| Career Readiness | Day 100 | `area-career` | `blue-700` | `Briefcase` |
+| Financial Readiness | Day 75 | `area-financial` | `gold-800` | `PiggyBank` |
+| Relocation & Life Logistics | Day 50 | `area-relocation` | `teal-700` | `MapPin` |
+| Network & Mentorship | Day 25 | `area-network` | `purple-700` | `Users` |
+| Wellness & Detour Planning | Day 0 (opens Day 25) | `area-wellness` | `pink-700` | `Compass` |
 
 ## 3. Typography
 
-All loaded with `next/font/google`, subset to Latin, `display: swap`.
+All loaded with `next/font/google` (`src/app/fonts.ts`), Latin subset, `display: swap`. The marker and handwritten faces aren't preloaded.
 
-| Role | Face | Fallback | Use |
-|---|---|---|---|
-| Marker display | **Permanent Marker** | `"Comic Sans MS", cursive` | Hero titles, countdown number, celebration moments. Short phrases only. |
-| Condensed header | **Bebas Neue** | `Impact, "Arial Narrow", sans-serif` | Section headers, stat labels, nav labels on desktop |
-| Editorial serif | **Playfair Display** | `Georgia, serif` | Story-site headings ("HOW BEYOND BLUE WORKS"), Launch File section titles |
-| UI / body | **Inter** (variable) | `system-ui, sans-serif` | Everything else |
-
-### 3.1 Type scale (mobile → desktop, fluid with `clamp`)
-
-| Token | Size | Line height | Face | Example |
+| Role | Face | Tailwind | Seen in the deck | Use |
 |---|---|---|---|---|
-| `display-xl` | 48 → 88 px | 1.0 | Marker | "Beyond Blue" hero |
+| Script wordmark | **Kaushan Script** | `font-script` | "Beyond Blue" logo, "In Your Pocket" | The wordmark and occasional script accents |
+| Marker caps | **Permanent Marker** | `font-marker` | "VERONICA STARTS HER PATH." | Big story headlines, countdown number |
+| Handwritten | **Patrick Hand** | `font-hand` | "Career Readiness", "Selected Pathway" | Labels on tape, notes, stickers |
+| Serif | **Source Serif 4** | `font-serif` / `font-heading` | "BUILT TO LAST", slide 7 screen titles | Section headings, app screen titles, Launch File |
+| UI / body | **Inter** | `font-sans` (default) | Slide 7 body text | Everything else |
+
+> The brief suggested Bebas Neue and Playfair Display. The deck uses no condensed face, and its serif is a lower-contrast, Times-like bold, so Source Serif 4 replaces Playfair and Bebas is dropped (one fewer font download).
+
+### 3.1 Type scale (fluid, Tailwind `text-*` utilities)
+
+| Token | Size | Line height | Typical face | Example |
+|---|---|---|---|---|
+| `display-xl` | 48 → 88 px | 1.0 | Script / marker | "Beyond Blue" hero |
 | `display-lg` | 40 → 64 px | 1.0 | Marker | "87" countdown number |
 | `display-md` | 28 → 40 px | 1.1 | Marker | "From Countdown to Launchpad" |
-| `heading-xl` | 32 → 48 px | 1.05 | Bebas Neue | Section headers |
-| `heading-serif` | 28 → 44 px | 1.15 | Playfair | "How Beyond Blue Works" |
-| `heading-lg` | 22 → 24 px | 1.25 | Inter 700 | Screen titles |
+| `heading-xl` | 32 → 48 px | 1.05 | Serif bold caps | "BUILT TO LAST" |
+| `heading-serif` | 28 → 44 px | 1.15 | Serif | Story-site section titles |
+| `heading-lg` | 22 → 24 px | 1.25 | Serif bold | App screen titles ("87 Days to Graduation") |
 | `heading-md` | 18 → 20 px | 1.3 | Inter 600 | Card titles |
 | `body-lg` | 18 px | 1.55 | Inter 400 | Story-site paragraphs |
 | `body` | 16 px | 1.5 | Inter 400 | Default UI text (never smaller for body copy) |
-| `body-sm` | 14 px | 1.45 | Inter 500 | Meta, helper text |
-| `caption` | 12 px | 1.4 | Inter 600, +0.02em | Chips, labels (uppercase allowed) |
+| `body-sm` | 14 px | 1.45 | Inter 500 | Meta, helper text, buttons |
+| `caption` | 12 px | 1.4 | Inter 600, +0.02em | Chips, labels |
 
 ## 4. Space, shape, elevation
 
 - **Spacing:** Tailwind 4 px scale. Screen gutters 16 px (mobile), 24 px (tablet), 32 px (desktop). Card padding 16–20 px.
 - **Radius:** `--radius-card: 14px`, `--radius-chip: 999px`, `--radius-button: 12px`. Torn-paper cards use a clip-path edge instead of radius on one side.
-- **Elevation:** paper shadows, warm and offset, not blurry grey: `--shadow-paper: 0 1px 0 var(--cream-200), 2px 4px 0 rgb(11 31 77 / 0.18)`. A "pinned" variant adds a slight rotation (−1.5° to 1.5°, reduced to 0° with reduced motion).
+- **Elevation:** paper shadows, warm and offset, not blurry grey: `--shadow-paper: 0 1px 0 var(--color-cream-200), 2px 4px 0 rgb(10 45 115 / 0.18)` (`shadow-paper` utility). A "pinned" variant adds a slight rotation (−1.5° to 1.5°, reduced to 0° with reduced motion).
 - **Layout widths:** content max 1120 px. App screens max 640 px column on desktop beside the sidebar.
 - **Breakpoints:** test at 375 (phone), 768 (tablet), 1280+ (desktop). Tailwind `md` = 768, `lg` = 1024, `xl` = 1280.
 
 ## 5. Texture and illustration
 
-- **Background:** `royal-700` with a soft radial burst (`radial-gradient` from `#1A4DA8` at the center to `royal-700`), plus an optional subtle noise SVG at 4% opacity.
+- **Background:** the deck's sunburst: `royal-700` with alternating `royal-500` rays from a repeating conic gradient, plus a soft radial glow (`bg-burst` utility, no image request).
 - **Torn paper:** an SVG mask (two or three edge variants) applied with `mask-image`, so it costs no extra network requests.
 - **Spiral notebook edge:** repeating SVG rings along the top or left edge of hero cards.
 - **Masking tape:** semi-transparent `cream-200` rotated rectangles with jagged ends (SVG), placed at card corners.
@@ -222,7 +223,7 @@ The **UI kit page** at `/dev/ui` (excluded from production builds or behind a fl
 ```
 ┌───────────────────────────────┐
 │ ●○○  step 1 of 3              │
-│ BUILD YOUR BEYOND BLUE        │  Bebas, cream on royal
+│ BUILD YOUR BEYOND BLUE        │  Serif bold, navy on paper
 │ Where are you headed?         │  Marker, with doodle arrow
 │ ┌───────────────────────────┐ │
 │ │▌Hired                     │ │  PathwayOption radio cards,
@@ -249,7 +250,7 @@ Desktop: centered 560 px paper card on burst background, steps as a horizontal s
 │ Good morning, Veronica   (VA) │
 │ ┌──── torn paper ───────────┐ │
 │ │       87                  │ │  Marker display-lg, ticks on view
-│ │  DAYS TO GRADUATION       │ │  Bebas
+│ │  DAYS TO GRADUATION       │ │  Serif caps
 │ │  ▓▓▓▓▓▓░░░░░░░░  12 of 30 │ │  StepsProgress
 │ └───────────────────────────┘ │
 │ YOUR 100-DAY CURRICULUM       │
@@ -327,7 +328,7 @@ Desktop: stats row, then a 2–3 column grid of alumni cards.
 | 2 | **Meet Veronica** | Illustrated/initials portrait card, pinned notes: "100 days left", "Work or grad school?", "Moving?", "What if plans change?" |
 | 3 | **You're not alone** | Giant "68%" sticker, sentence, source citation (Inside Higher Ed Student Voice, 2024) |
 | 4 | **5 Pathways** | Interactive tabs/cards. Selecting one shows its self-description, focus areas and accent color |
-| 5 | **How it works** | Playfair "HOW BEYOND BLUE WORKS", six principle cards with numbered tape labels |
+| 5 | **How it works** | Serif "HOW BEYOND BLUE WORKS", six principle cards with numbered tape labels |
 | 6 | **In Your Pocket** | Four phone frames (Profile, Personalize, Prepare, Connect) with real app screenshots |
 | 7 | **Alumni Loop** | Animated cycle: Senior → Graduate → Day +100 → Alumni → Next Senior (SVG circle, step highlight auto-advances, pausable, static list in reduced motion) |
 | 8 | **Built to Last** | Reusable curriculum, new cohorts, growing alumni network |

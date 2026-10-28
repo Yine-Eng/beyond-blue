@@ -1,18 +1,213 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-/* Design tokens land in #7 (docs/design-system.md). */
-:root {
-  --background: #f6efe2;
-  --foreground: #0b1f4d;
+/*
+ * Beyond Blue design tokens (docs/design-system.md).
+ * Palette values mirror src/lib/design/tokens.ts; a unit test keeps them in sync.
+ */
+@theme {
+  /* Blues */
+  --color-navy-950: #0b1f4d;
+  --color-navy-900: #0a2d73;
+  --color-navy-800: #1f385e;
+  --color-royal-700: #174380;
+  --color-royal-500: #2b5494;
+  --color-blue-700: #245fa8;
+  --color-blue-500: #3d85d3;
+  --color-blue-300: #a4ccf8;
+  --color-blue-200: #b8d7ea;
+  --color-blue-100: #d2e3f3;
+
+  /* Paper */
+  --color-paper: #fcfaf4;
+  --color-cream-50: #f3ece0;
+  --color-cream-100: #f0e9db;
+  --color-cream-200: #e4d4b0;
+
+  /* Accents */
+  --color-gold-500: #e5b54f;
+  --color-gold-400: #f7d685;
+  --color-gold-800: #7a5c00;
+  --color-orange-500: #ff6722;
+  --color-orange-700: #b23f0c;
+  --color-green-400: #7fcb8a;
+  --color-green-700: #256b34;
+  --color-purple-400: #a98be0;
+  --color-purple-700: #6b4fb0;
+  --color-pink-300: #f8bac3;
+  --color-pink-700: #a3305a;
+  --color-teal-700: #1f6f5e;
+
+  /* Readiness area tints */
+  --color-area-career: #eef5fc;
+  --color-area-financial: #fbf3d8;
+  --color-area-relocation: #e9f6f3;
+  --color-area-network: #f3ecfa;
+  --color-area-wellness: #fae9f0;
+  --color-success-50: #eaf7ee;
+
+  /* Neutrals and status */
+  --color-ink-900: #1a1a1a;
+  --color-ink-600: #4a4f5c;
+  --color-danger: #b42318;
+  --color-white: #ffffff;
+
+  /* Fluid type scale (mobile → desktop) */
+  --text-display-xl: clamp(3rem, 2.1rem + 4.5vw, 5.5rem);
+  --text-display-xl--line-height: 1;
+  --text-display-lg: clamp(2.5rem, 1.9rem + 3vw, 4rem);
+  --text-display-lg--line-height: 1;
+  --text-display-md: clamp(1.75rem, 1.45rem + 1.5vw, 2.5rem);
+  --text-display-md--line-height: 1.1;
+  --text-heading-xl: clamp(2rem, 1.6rem + 2vw, 3rem);
+  --text-heading-xl--line-height: 1.05;
+  --text-heading-serif: clamp(1.75rem, 1.35rem + 2vw, 2.75rem);
+  --text-heading-serif--line-height: 1.15;
+  --text-heading-lg: clamp(1.375rem, 1.3rem + 0.4vw, 1.5rem);
+  --text-heading-lg--line-height: 1.25;
+  --text-heading-md: clamp(1.125rem, 1.05rem + 0.4vw, 1.25rem);
+  --text-heading-md--line-height: 1.3;
+  --text-body-lg: 1.125rem;
+  --text-body-lg--line-height: 1.55;
+  --text-body: 1rem;
+  --text-body--line-height: 1.5;
+  --text-body-sm: 0.875rem;
+  --text-body-sm--line-height: 1.45;
+  --text-caption: 0.75rem;
+  --text-caption--line-height: 1.4;
+
+  /* Shape and elevation */
+  --radius-card: 14px;
+  --radius-button: 12px;
+  --shadow-paper: 0 1px 0 var(--color-cream-200), 2px 4px 0 rgb(10 45 115 / 0.18);
+  --shadow-paper-lg: 0 1px 0 var(--color-cream-200), 4px 8px 0 rgb(10 45 115 / 0.22);
+
+  /* Doodle draw-on (paths use pathLength=1). Reduced motion jumps straight to the drawn state. */
+  --animate-draw: draw 0.8s ease-out both;
+  @keyframes draw {
+    from {
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+    }
+    to {
+      stroke-dasharray: 1;
+      stroke-dashoffset: 0;
+    }
+  }
 }
 
+/* next/font exposes these variables on <html>; see src/app/fonts.ts */
 @theme inline {
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-serif: var(--font-source-serif), Georgia, "Times New Roman", serif;
+  --font-heading: var(--font-source-serif), Georgia, serif;
+  --font-marker: var(--font-permanent-marker), "Comic Sans MS", cursive;
+  --font-script: var(--font-kaushan), "Brush Script MT", cursive;
+  --font-hand: var(--font-patrick-hand), "Comic Sans MS", cursive;
+
+  /* shadcn/ui semantic colours, mapped onto the palette */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: system-ui, sans-serif;
+:root {
+  --background: var(--color-paper);
+  --foreground: var(--color-ink-900);
+  --card: var(--color-white);
+  --card-foreground: var(--color-ink-900);
+  --popover: var(--color-white);
+  --popover-foreground: var(--color-ink-900);
+  --primary: var(--color-navy-900);
+  --primary-foreground: var(--color-white);
+  --secondary: var(--color-blue-100);
+  --secondary-foreground: var(--color-navy-900);
+  --muted: var(--color-cream-50);
+  --muted-foreground: var(--color-ink-600);
+  --accent: var(--color-cream-50);
+  --accent-foreground: var(--color-navy-900);
+  --destructive: var(--color-danger);
+  --border: #dcd3c1;
+  --input: #8f8778;
+  --ring: var(--color-navy-900);
+  --radius: 0.75rem;
+}
+
+/* Readable defaults and a single, highly visible focus style for every control. */
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    @apply font-sans;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+  /*
+   * Dual ring: the navy inner ring shows on light paper, the gold outer ring on blue backgrounds.
+   * !important beats component-level `outline-none`, so no control ships without a focus state.
+   */
+  :focus-visible {
+    outline: 3px solid var(--color-gold-400) !important;
+    outline-offset: 2px !important;
+    box-shadow: 0 0 0 2px var(--color-navy-900) !important;
+  }
+}
+
+/* Sunburst background from the deck: royal blue with soft lighter rays. */
+@utility bg-burst {
+  background-color: var(--color-royal-700);
+  background-image:
+    radial-gradient(circle at 50% 40%, rgb(255 255 255 / 0.08), transparent 60%),
+    repeating-conic-gradient(
+      from 0deg at 50% 40%,
+      var(--color-royal-700) 0deg 9deg,
+      color-mix(in oklab, var(--color-royal-500) 50%, var(--color-royal-700)) 9deg 18deg
+    );
+}
+
+@utility shadow-paper {
+  box-shadow: var(--shadow-paper);
+}
+
+@utility shadow-paper-lg {
+  box-shadow: var(--shadow-paper-lg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
