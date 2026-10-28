@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
-import { DemoButton } from "@/components/demo/demo-button";
+import { DemoButton, StaffDemoButton } from "@/components/demo/demo-button";
 
 export const metadata: Metadata = { title: "Explore as Veronica" };
 
@@ -42,6 +42,14 @@ export default function DemoPage(props: PageProps<"/demo">) {
         <DemoError searchParams={props.searchParams} />
       </Suspense>
       <DemoButton className="w-full" />
+      <div className="bg-cream-50 rounded-lg px-4 py-3">
+        <p className="text-navy-900 font-semibold">Program staff or a judge?</p>
+        <p className="text-body-sm text-ink-600 mt-1">
+          See the cohort dashboard, at-risk students, Day +100 insights and the Last Mile Fund queue
+          with a fictional pilot cohort. Nothing is real or saved.
+        </p>
+        <StaffDemoButton className="mt-1" />
+      </div>
       <p className="text-body-sm text-ink-600">
         Ready for your own plan?{" "}
         <Link href="/sign-in" className="font-semibold text-blue-700 underline underline-offset-4">

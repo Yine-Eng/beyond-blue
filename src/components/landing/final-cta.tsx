@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Wordmark } from "@/components/brand/wordmark";
 import { Doodle, PaperCard, Tape } from "@/components/scrapbook";
 import { Button } from "@/components/ui/button";
-import { DemoButton } from "@/components/demo/demo-button";
+import { DemoButton, StaffDemoButton } from "@/components/demo/demo-button";
 import { GET_STARTED_HREF, hero } from "@/content/copy/landing";
 import { finalCta, footer } from "@/content/copy/story-end";
 
@@ -29,6 +29,9 @@ export function FinalCta() {
             <Link href={GET_STARTED_HREF}>{hero.startCta}</Link>
           </Button>
         </div>
+        <p className="text-body-sm text-ink-600 mt-4 flex flex-wrap items-center justify-center gap-x-1">
+          See the staff side: <StaffDemoButton label="cohort dashboard and fund review (demo) →" />
+        </p>
       </PaperCard>
     </section>
   );

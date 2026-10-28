@@ -10,7 +10,13 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
  * a <Suspense> boundary. `cache` dedupes lookups within one request.
  */
 
-export type SessionUser = { id: string; email: string | null; isAnonymous: boolean };
+export type SessionUser = {
+  id: string;
+  email: string | null;
+  isAnonymous: boolean;
+  /** "staff" for a "View as staff (demo)" session. Only ever honoured for anonymous demo users. */
+  demoRole: "staff" | null;
+};
 
 export const getSessionUser = cache(async (): Promise<SessionUser | null> => {
   // Session checks compare token expiry with the current time: always request-time work.
@@ -19,10 +25,13 @@ export const getSessionUser = cache(async (): Promise<SessionUser | null> => {
   const { data } = await supabase.auth.getClaims();
   const claims = data?.claims;
   if (!claims?.sub) return null;
+  const isAnonymous = claims.is_anonymous === true;
+  const metadata = (claims.user_metadata ?? {}) as { demo_role?: unknown };
   return {
     id: claims.sub,
     email: typeof claims.email === "string" && claims.email ? claims.email : null,
-    isAnonymous: claims.is_anonymous === true,
+    isAnonymous,
+    demoRole: isAnonymous && metadata.demo_role === "staff" ? "staff" : null,
   };
 });
 
@@ -54,7 +63,7 @@ export async function requirePlan() {
     redirect(
       role === "mentor"
         ? "/mentor"
-        : role === "staff" || role === "admin"
+        : role === "staff" || role === "admin" || ctx.user.demoRole === "staff"
           ? "/staff"
           : "/onboarding",
     );
