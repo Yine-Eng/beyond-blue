@@ -4,6 +4,16 @@ All notable changes to Beyond Blue are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/).
 
+## [0.2.1] - 2026-10-28
+
+### Bug fixes
+
+- **landing:** Stop the budget table widening the page on phones
+
+### Tests
+
+- **landing:** Measure horizontal overflow against the configured viewport
+
 ## [0.2.0] - 2026-10-28
 
 ### Features
