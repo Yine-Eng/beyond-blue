@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { Wordmark } from "@/components/brand/wordmark";
-import { Button } from "@/components/ui/button";
-import { DEMO_HREF } from "@/content/copy/landing";
+import { DemoButton } from "@/components/demo/demo-button";
 
 const LINKS = [
   { href: "#pathways", label: "Pathways" },
@@ -28,9 +27,7 @@ export function SiteHeader() {
             ))}
           </ul>
         </nav>
-        <Button asChild variant="accent" size="sm" className="h-10 px-4">
-          <Link href={DEMO_HREF}>Try the demo</Link>
-        </Button>
+        <DemoButton label="Try the demo" size="sm" className="h-10 px-4" />
       </div>
     </header>
   );

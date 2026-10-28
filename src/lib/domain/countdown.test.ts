@@ -66,3 +66,12 @@ describe("date helpers", () => {
     expect(() => calendarDaysBetween("2027-5-8", "2027-05-09")).toThrow();
   });
 });
+
+describe("greetingFor", () => {
+  it("greets by the hour in the cohort's time zone", async () => {
+    const { greetingFor } = await import("./greeting");
+    expect(greetingFor(NY, new Date("2027-02-10T13:00:00Z"))).toBe("Good morning"); // 08:00
+    expect(greetingFor(NY, new Date("2027-02-10T19:00:00Z"))).toBe("Good afternoon"); // 14:00
+    expect(greetingFor(NY, new Date("2027-02-11T01:00:00Z"))).toBe("Good evening"); // 20:00
+  });
+});

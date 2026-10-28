@@ -5,8 +5,8 @@ export type RateLimitRule = { max: number; windowSeconds: number };
 
 /** Limits used across the app (docs/architecture.md §7.4). */
 export const RATE_LIMITS = {
-  /** Anonymous demo sessions per IP address. */
-  demoPerIp: { max: 5, windowSeconds: 60 * 60 },
+  /** Anonymous demo sessions per IP. Generous: judges in one room often share a venue IP. */
+  demoPerIp: { max: 30, windowSeconds: 60 * 60 },
   /** Demo sessions across everyone, so a flood can't fill the database. */
   demoGlobal: { max: 300, windowSeconds: 60 * 60 },
   magicLinkPerEmail: { max: 3, windowSeconds: 15 * 60 },

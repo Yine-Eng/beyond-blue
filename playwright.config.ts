@@ -1,4 +1,8 @@
+import { existsSync } from "node:fs";
 import { defineConfig, devices } from "@playwright/test";
+
+// Local runs use the same Supabase project as `next start`; CI passes secrets as env vars.
+if (existsSync(".env.local")) process.loadEnvFile(".env.local");
 
 const PORT = Number(process.env.PORT ?? 3000);
 const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? `http://localhost:${PORT}`;
