@@ -50,10 +50,35 @@ test("the mentor inbox is accessible", async ({ page, signIn }) => {
   await expectNoA11yViolations(page);
 });
 
-test("students can't open the staff area", async ({ page, signIn }) => {
+test("non-staff see a Staff only page and stay signed in", async ({ page, signIn }) => {
   await signIn("student");
-  await page.goto("/staff");
-  await expect(page).not.toHaveURL(/\/staff/);
+  for (const path of ["/staff", "/staff/fund"]) {
+    await page.goto(path);
+    await expect(page.getByRole("heading", { level: 1, name: "Staff only" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Last Mile Fund review" })).toHaveCount(0);
+  }
+  await expectNoA11yViolations(page);
+  // Still signed in: the app sends a student without a plan to onboarding, not to sign-in.
+  await page.goto("/home");
+  await expect(page).toHaveURL(/\/onboarding/);
+});
+
+test("a role change to staff takes effect without signing in again", async ({ page, signIn }) => {
+  const id = await signIn("student");
+  await page.goto("/onboarding");
+  await expect(page).toHaveURL(/\/onboarding/);
+
+  // An admin grants the staff role while the user is signed in (as done in SQL in production).
+  const { error } = await admin().from("profiles").update({ role: "staff" }).eq("id", id);
+  if (error) throw error;
+
   await page.goto("/staff/fund");
-  await expect(page).not.toHaveURL(/\/staff/);
+  await expect(page.getByRole("heading", { level: 1, name: "Last Mile Fund review" })).toBeVisible({
+    timeout: 20_000,
+  });
+  await page.goto("/staff");
+  await expect(page.getByRole("heading", { level: 1, name: "Cohort dashboard" })).toBeVisible();
+  // The session survived every role check: staff without a plan land on the dashboard.
+  await page.goto("/home");
+  await expect(page).toHaveURL(/\/staff$/, { timeout: 20_000 });
 });

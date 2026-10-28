@@ -5,10 +5,30 @@ import { Wordmark } from "@/components/brand/wordmark";
 import { PlanSkeleton } from "@/components/plan/plan-skeleton";
 import { Toaster } from "@/components/ui/sonner";
 import { signOut } from "@/lib/actions/auth";
-import { requireStaff } from "@/lib/data/fund";
+import { getStaffAccess } from "@/lib/data/fund";
 
+/** Non-staff stay signed in and see a short explanation; the staff page itself never renders. */
 async function StaffGate({ children }: { children: ReactNode }) {
-  await requireStaff();
+  const { isStaff } = await getStaffAccess();
+  if (!isStaff)
+    return (
+      <section aria-labelledby="staff-only" className="rounded-card bg-cream-50 p-6">
+        <h1 id="staff-only" className="text-heading-lg text-navy-900 font-serif font-bold">
+          Staff only
+        </h1>
+        <p className="text-ink-900 mt-2">
+          This area is for Career Services and Student Success staff. If you should have access, ask
+          the program team to add the staff role to your account. You&apos;ll see it on your next
+          visit, with no need to sign in again.
+        </p>
+        <Link
+          href="/home"
+          className="mt-4 inline-flex min-h-11 items-center font-semibold text-blue-700 underline underline-offset-4"
+        >
+          Go to your Beyond Blue home
+        </Link>
+      </section>
+    );
   return children;
 }
 
