@@ -638,6 +638,7 @@ export type Database = {
         Args: { p_key: string; p_max: number; p_window_seconds: number }
         Returns: boolean
       }
+      my_mentor_id: { Args: never; Returns: string }
       network_stats: {
         Args: never
         Returns: { alumni: number; mentors: number; students_on_path: number }[]

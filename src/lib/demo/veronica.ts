@@ -184,4 +184,69 @@ export async function seedVeronica(userId: string): Promise<void> {
     })),
   );
   if (completionError) throw completionError;
+
+  await seedConnections(admin, userId);
+}
+
+/** One accepted and one pending connection with fictional alumni, plus a logged conversation. */
+async function seedConnections(
+  admin: ReturnType<typeof createSupabaseAdminClient>,
+  userId: string,
+) {
+  await admin.from("connections").delete().eq("student_id", userId);
+  const { data: mentors, error } = await admin
+    .from("mentor_profiles")
+    .select("id, display_name")
+    .eq("is_seeded_fictional", true)
+    .in("display_name", ["Marcus Bell", "Alicia Moreno"]);
+  if (error) throw error;
+  const idOf = (name: string) => mentors.find((m) => m.display_name === name)?.id;
+  const marcus = idOf("Marcus Bell");
+  const alicia = idOf("Alicia Moreno");
+  if (!marcus || !alicia) return;
+
+  const day = 86_400_000;
+  const { data: rows, error: insertError } = await admin
+    .from("connections")
+    .insert([
+      {
+        student_id: userId,
+        mentor_id: marcus,
+        status: "accepted" as const,
+        match_score: 98,
+        match_reason:
+          "Also lives in Atlanta, GA · Works at Peachtree Digital · Works in Technology",
+        note: "Hi Marcus! I'm starting at Peachtree Digital in June and would love advice on the move.",
+        requested_at: new Date(Date.now() - 9 * day).toISOString(),
+        responded_at: new Date(Date.now() - 8 * day).toISOString(),
+      },
+      {
+        student_id: userId,
+        mentor_id: alicia,
+        status: "pending" as const,
+        match_score: 88,
+        match_reason: "Works at Peachtree Digital · Works in Technology · Mentors Hired students",
+        note: "Hi Alicia, I'd love to hear how you moved from program work into engineering.",
+        requested_at: new Date(Date.now() - 1 * day).toISOString(),
+      },
+    ])
+    .select("id, mentor_id");
+  if (insertError) throw insertError;
+
+  const accepted = rows.find((r) => r.mentor_id === marcus);
+  if (accepted)
+    await admin.from("mentor_notes").insert({
+      connection_id: accepted.id,
+      met_on: addDays(todayInTimeZone(TIME_ZONE), -5),
+      topic: "Moving to Atlanta",
+      notes:
+        "Talked through neighborhoods near MARTA and what the first two weeks at Peachtree look like.",
+    });
+
+  // Veronica shares her budget with her mentors.
+  await admin
+    .from("task_completions")
+    .update({ shared_with_mentors: true })
+    .eq("student_id", userId)
+    .eq("task_id", "hired.financial.budget-90");
 }
