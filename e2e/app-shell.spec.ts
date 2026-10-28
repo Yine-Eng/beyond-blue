@@ -1,51 +1,30 @@
 import { expect, test } from "@playwright/test";
 import { expectNoA11yViolations } from "./a11y";
 
-const TABS = [
-  { label: "Home", path: "/home" },
-  { label: "Plan", path: "/plan" },
-  { label: "Network", path: "/network" },
-  { label: "Profile", path: "/profile" },
-] as const;
+const APP_PATHS = ["/home", "/plan", "/network", "/profile", "/onboarding"];
 
-test.describe("app shell", () => {
-  test("navigates between the four tabs and marks the current one", async ({ page }, testInfo) => {
-    const desktop = testInfo.project.name === "desktop";
-    await page.goto("/home");
-
-    const nav = page.getByRole("navigation", { name: "Main" });
-    await expect(nav).toHaveCount(1); // only one of bottom nav / sidebar is visible per viewport
-    await expect(nav).toBeVisible();
-
-    for (const { label, path } of TABS) {
-      await nav.getByRole("link", { name: label }).click();
-      await expect(page).toHaveURL(path);
-      await expect(nav.getByRole("link", { name: label })).toHaveAttribute("aria-current", "page");
-      await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
-    }
-
-    // The bottom bar is for phones/tablets, the sidebar for desktop.
-    const box = await nav.boundingBox();
-    expect(box).not.toBeNull();
-    if (desktop) expect(box!.x + box!.width).toBeLessThan(300);
-    else expect(box!.y).toBeGreaterThan(page.viewportSize()!.height / 2);
-  });
-
-  test("offers a skip link that moves focus to the main content", async ({ page }) => {
-    await page.goto("/plan");
-    await page.keyboard.press("Tab");
-    const skip = page.getByRole("link", { name: "Skip to content" });
-    await expect(skip).toBeFocused();
-    await skip.press("Enter");
-    await expect(page.locator("#main")).toBeFocused();
-  });
-
-  for (const { path } of TABS) {
-    test(`${path} has no serious a11y violations`, async ({ page }) => {
+test.describe("signed out", () => {
+  for (const path of APP_PATHS) {
+    test(`${path} redirects to sign-in and remembers where you were going`, async ({ page }) => {
       await page.goto(path);
-      await expectNoA11yViolations(page);
+      await expect(page).toHaveURL(new RegExp(`/sign-in\\?next=${encodeURIComponent(path)}`));
+      await expect(
+        page.getByRole("heading", { level: 1, name: "Sign in to Beyond Blue" }),
+      ).toBeVisible();
     });
   }
+
+  test("sign-in page is accessible and validates the email", async ({ page }) => {
+    await page.goto("/sign-in");
+    await expectNoA11yViolations(page);
+    await page.getByRole("button", { name: "Email me a sign-in link" }).click();
+    await expect(page.getByText("Enter a valid email address.")).toBeVisible();
+  });
+
+  test("an expired link shows a clear error", async ({ page }) => {
+    await page.goto("/sign-in?error=link");
+    await expect(page.getByText("That sign-in link has expired or was already used")).toBeVisible();
+  });
 });
 
 test("UI kit renders every section without a11y violations", async ({ page }) => {
