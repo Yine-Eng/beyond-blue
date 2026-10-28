@@ -82,6 +82,19 @@
   --radius-button: 12px;
   --shadow-paper: 0 1px 0 var(--color-cream-200), 2px 4px 0 rgb(10 45 115 / 0.18);
   --shadow-paper-lg: 0 1px 0 var(--color-cream-200), 4px 8px 0 rgb(10 45 115 / 0.22);
+
+  /* Doodle draw-on (paths use pathLength=1). Reduced motion jumps straight to the drawn state. */
+  --animate-draw: draw 0.8s ease-out both;
+  @keyframes draw {
+    from {
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+    }
+    to {
+      stroke-dasharray: 1;
+      stroke-dashoffset: 0;
+    }
+  }
 }
 
 /* next/font exposes these variables on <html>; see src/app/fonts.ts */
@@ -176,7 +189,7 @@
     repeating-conic-gradient(
       from 0deg at 50% 40%,
       var(--color-royal-700) 0deg 9deg,
-      color-mix(in oklab, var(--color-royal-500) 70%, var(--color-royal-700)) 9deg 18deg
+      color-mix(in oklab, var(--color-royal-500) 50%, var(--color-royal-700)) 9deg 18deg
     );
 }
 
