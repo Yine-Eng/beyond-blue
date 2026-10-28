@@ -12,7 +12,7 @@ const LINKS = [
 
 export function SiteHeader() {
   return (
-    <header className="bg-navy-800/95 sticky top-[env(safe-area-inset-top,0px)] z-40 backdrop-blur">
+    <header className="bg-navy-800 sticky top-[env(safe-area-inset-top,0px)] z-40">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-2 sm:px-6">
         <Link href="/" aria-label="Beyond Blue home" className="shrink-0">
           <Wordmark className="text-2xl sm:text-3xl" />

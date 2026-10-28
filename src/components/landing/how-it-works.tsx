@@ -27,7 +27,7 @@ export function HowItWorks() {
           const [card, badge] = TONES[i]!;
           return (
             <li key={title}>
-              <Reveal index={i} className="h-full">
+              <Reveal className="h-full">
                 <article className={`${card} h-full rounded-[var(--radius-card)] p-6`}>
                   <div className="flex items-start gap-3">
                     <span

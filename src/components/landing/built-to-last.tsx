@@ -32,7 +32,7 @@ export function BuiltToLast() {
           const blue = i % 2 === 0;
           return (
             <li key={title}>
-              <Reveal index={i} tilt={0}>
+              <Reveal tilt={0}>
                 <div
                   className={`${blue ? "bg-blue-100" : "bg-area-financial"} flex items-start gap-4 rounded-[var(--radius-card)] p-5`}
                 >

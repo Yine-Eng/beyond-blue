@@ -70,7 +70,7 @@ export function InYourPocket() {
       </div>
 
       <div className="mt-10 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
-        <Reveal index={0}>
+        <Reveal>
           <Phone
             label="Profile"
             description="Profile screen: Veronica Thompson, Senior, Class of 2027, Computer Science, with her destination role, target city Atlanta and journey tags."
@@ -100,7 +100,7 @@ export function InYourPocket() {
           </Phone>
         </Reveal>
 
-        <Reveal index={1}>
+        <Reveal>
           <Phone
             label="Personalize"
             description="Personalize screen: Build Your Beyond Blue, choose where you're headed from five pathways and pick journey tags, then Create My 100-Day Plan."
@@ -127,7 +127,7 @@ export function InYourPocket() {
           </Phone>
         </Reveal>
 
-        <Reveal index={2}>
+        <Reveal>
           <Phone
             label="Prepare"
             description="Prepare screen: Good morning, Veronica. 87 days to graduation, a progress bar, the current curriculum task and five readiness area cards."
@@ -152,7 +152,7 @@ export function InYourPocket() {
           </Phone>
         </Reveal>
 
-        <Reveal index={3}>
+        <Reveal>
           <Phone
             label="Connect"
             description="Connect screen: Your Beyond Blue Network with students on your path and alumni you may want to meet, each with a reason for the match and a Connect button."

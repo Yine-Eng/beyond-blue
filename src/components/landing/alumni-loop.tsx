@@ -1,7 +1,7 @@
 "use client";
 
 import { Pause, Play } from "lucide-react";
-import { useReducedMotion } from "motion/react";
+import { usePrefersReducedMotion } from "@/lib/hooks/use-prefers-reduced-motion";
 import { useEffect, useState } from "react";
 import { Doodle } from "@/components/scrapbook";
 import { alumniLoop } from "@/content/copy/story-end";
@@ -20,7 +20,7 @@ const STEP_MS = 3500;
 
 /** Senior → Graduate → Day +100 → Alumni → Next Senior, highlighted in turn (pausable). */
 export function AlumniLoopCycle() {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = usePrefersReducedMotion();
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
   const playing = !paused && !reduceMotion;
