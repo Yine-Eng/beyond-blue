@@ -2,7 +2,8 @@ import { GraduationCap } from "lucide-react";
 import Link from "next/link";
 import { Doodle, PaperCard, Sticker, Tape } from "@/components/scrapbook";
 import { Button } from "@/components/ui/button";
-import { DEMO_HREF, GET_STARTED_HREF, hero } from "@/content/copy/landing";
+import { DemoButton } from "@/components/demo/demo-button";
+import { GET_STARTED_HREF, hero } from "@/content/copy/landing";
 
 const STACK_TONES = ["bg-blue-200", "bg-cream-100", "bg-gold-400", "bg-blue-300"] as const;
 
@@ -44,9 +45,7 @@ export function Hero() {
             <p className="text-body-lg text-ink-600 mt-3">{hero.tagline}</p>
 
             <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center lg:justify-start">
-              <Button asChild variant="accent" size="lg" className="w-full sm:w-auto">
-                <Link href={DEMO_HREF}>{hero.demoCta} →</Link>
-              </Button>
+              <DemoButton label={`${hero.demoCta} →`} className="w-full sm:w-auto" />
               <Button asChild variant="outline" size="lg" className="w-full bg-white sm:w-auto">
                 <Link href={GET_STARTED_HREF}>{hero.startCta}</Link>
               </Button>
