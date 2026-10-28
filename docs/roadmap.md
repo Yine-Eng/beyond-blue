@@ -275,7 +275,7 @@
 
 **Acceptance criteria**
 - [ ] `supabase/` folder with config, `migrations/` and `seed.sql`
-- [ ] Server and browser clients in `src/lib/supabase` using `@supabase/ssr`; service-role client guarded with `server-only`
+- [ ] Server and browser clients in `src/lib/supabase` using `@supabase/ssr`; clients use the publishable key (`NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`); the secret-key client is guarded with `server-only`
 - [ ] `npm run db:types` generates `database.types.ts`
 - [ ] CI starts local Supabase for integration and RLS tests
 - [ ] Keep-alive scheduled job documented to prevent free-tier pausing

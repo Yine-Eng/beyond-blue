@@ -79,7 +79,7 @@ flowchart TB
 ```
 
 Key points:
-- **The user's JWT is used for every query**, so RLS applies to every request. The Supabase service-role key is used only in two server-only places: the demo-mode seeder and the curriculum seed script. It is never shipped to the browser.
+- **The user's JWT is used for every query**, so RLS applies to every request. The Supabase **secret key** (`SUPABASE_SECRET_KEY`, which replaces the legacy service-role key) is used only in two server-only places: the demo-mode seeder and the curriculum seed script. It is never shipped to the browser.
 - **File uploads go directly from the browser to Supabase Storage** using short-lived signed upload URLs created by a Server Action. This keeps large payloads off Vercel functions (Hobby has a 4.5 MB request limit).
 - **Static and public content** (story site, curriculum metadata) is statically rendered and cached at the edge.
 
@@ -567,7 +567,7 @@ Time-zone-safe and derived from the cohort's graduation date. Implemented in `sr
 - **Deny by default.** RLS is enabled on every table in `public`. No table is readable without a policy.
 - **Defense in depth.** Server Actions check role and ownership *and* RLS enforces it again.
 - **Minimal PII.** Name, email, major, class year, target city, journey tags. **Never** SSNs, bank or card numbers, government IDs or exact salaries.
-- **Service-role key** only in server-only modules (`import 'server-only'`), used for demo seeding and curriculum seeding.
+- **Secret key** (`SUPABASE_SECRET_KEY`) only in server-only modules (`import 'server-only'`), used for demo seeding and curriculum seeding.
 
 ### 7.2 Role helpers
 
@@ -616,7 +616,7 @@ RLS policies are tested with **pgTAP** in `supabase/tests/` (run in CI against a
 ## 8. Demo mode
 
 1. "Try the demo as Veronica" calls a Server Action that rate-limits by IP, then calls `supabase.auth.signInAnonymously()`.
-2. A server-only seeder (service role) clones the **Veronica seed** into the new anonymous user's rows: profile (`is_demo = true`), demo cohort (graduation = now + 87 days), Hired plan, 12 completions with sample outputs (pre-uploaded shared sample files), one pending and one accepted connection with fictional alumni, a partial Detour plan.
+2. A server-only seeder (secret key) clones the **Veronica seed** into the new anonymous user's rows: profile (`is_demo = true`), demo cohort (graduation = now + 87 days), Hired plan, 12 completions with sample outputs (pre-uploaded shared sample files), one pending and one accepted connection with fictional alumni, a partial Detour plan.
 3. The user lands on `/plan`. The demo banner offers "Reset demo" (re-run the seeder) and "Create your own plan" (sign out, go to sign-in).
 4. `pg_cron` deletes demo users and their storage objects older than 24 h.
 5. **Staff demo:** a separate seeded demo cohort of ~60 fictional students feeds a read-only staff dashboard view for judges.
