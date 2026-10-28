@@ -9,7 +9,7 @@ There are 5 pathways × 5 readiness areas × 6 tasks = 150 tasks. Content must n
 
 ## Decision
 - The source of truth is **typed TypeScript data** in `src/content/curriculum/` (one file per pathway), validated by a Zod schema in a unit test.
-- `scripts/seed-curriculum.ts` upserts the content into `pathways`, `readiness_areas` and `tasks`, bumping `content_version` when a task changes. It runs in CI against local Supabase, and against production manually (with approval).
+- `scripts/seed-curriculum.mts` upserts the content into `pathways`, `readiness_areas` and `tasks`, bumping `content_version` when a task changes. It runs in CI against local Supabase, and against production manually (with approval).
 - Task ids are stable (`{pathway}.{area}.{slug}`), so completions survive content edits.
 - A staff-facing content editor is a post-MVP stretch goal. Until then, Career Services reviews content changes through PRs (or through a shared doc that gets transcribed into a PR).
 
