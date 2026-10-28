@@ -12,7 +12,7 @@ async function StaffGate({ children }: { children: ReactNode }) {
   return children;
 }
 
-/** Staff area (Career Services and Student Success): the Last Mile Fund review queue. */
+/** Staff area (Career Services and Student Success): the cohort dashboard and the Last Mile Fund review queue. */
 export default function StaffLayout({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-dvh flex-col">
@@ -23,10 +23,13 @@ export default function StaffLayout({ children }: { children: ReactNode }) {
         Skip to content
       </a>
       <header className="bg-burst flex flex-wrap items-center gap-4 px-4 py-3 sm:px-6">
-        <Link href="/staff/fund" className="bg-navy-800 -rotate-1 rounded-sm px-3 py-1.5">
+        <Link href="/staff" className="bg-navy-800 -rotate-1 rounded-sm px-3 py-1.5">
           <Wordmark />
         </Link>
         <nav aria-label="Staff" className="text-cream-50 flex gap-1 font-semibold">
+          <Link href="/staff" className="rounded-button px-3 py-2 hover:bg-white/10">
+            Dashboard
+          </Link>
           <Link href="/staff/fund" className="rounded-button px-3 py-2 hover:bg-white/10">
             Fund review
           </Link>
