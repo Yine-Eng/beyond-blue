@@ -1,7 +1,7 @@
 -- RLS policy tests (pgTAP). Run with `supabase test db` against a local stack (CI `db` job).
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(16);
+select plan(17);
 
 -- Two students and one staff member
 insert into auth.users (id, email, instance_id, aud, role)
@@ -53,6 +53,10 @@ select throws_ok(
 select throws_ok(
   $$ update public.task_completions set verified_at = now() where student_id = '11111111-1111-1111-1111-111111111111' $$,
   '42501', null, 'a student cannot verify their own output');
+select lives_ok(
+  $ update public.task_completions set output_url = 'https://example.edu/a2', completed_at = now()
+     where student_id = '11111111-1111-1111-1111-111111111111' $,
+  'a student can replace their own output');
 
 select throws_ok(
   $$ update public.profiles set role = 'admin' where id = '11111111-1111-1111-1111-111111111111' $$,
