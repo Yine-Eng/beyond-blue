@@ -4,6 +4,12 @@ All notable changes to Beyond Blue are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/).
 
+## [1.1.2] - 2026-10-28
+
+### Bug fixes
+
+- **auth:** Offer the demos when the sign-in email can't be sent; tell judges and visitors the demos need no sign-up (#117)
+
 ## [1.1.1] - 2026-10-28
 
 ### Bug fixes
