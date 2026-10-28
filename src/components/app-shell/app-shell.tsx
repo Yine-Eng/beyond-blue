@@ -1,9 +1,9 @@
 import { LogOut } from "lucide-react";
 import Link from "next/link";
-import type { ReactNode } from "react";
+import { type ReactNode, Suspense } from "react";
 import { Wordmark } from "@/components/brand/wordmark";
 import { signOut } from "@/lib/actions/auth";
-import { BottomNav, SidebarNav } from "./app-nav";
+import { BottomNav, BottomNavView, SidebarNav, SidebarNavView } from "./app-nav";
 
 /** Authenticated app frame: sidebar on desktop, header + bottom tabs on phones. */
 export function AppShell({ children }: { children: ReactNode }) {
@@ -20,7 +20,9 @@ export function AppShell({ children }: { children: ReactNode }) {
         <Link href="/home" className="bg-navy-800 -rotate-1 self-start rounded-sm px-4 py-2">
           <Wordmark />
         </Link>
-        <SidebarNav />
+        <Suspense fallback={<SidebarNavView pathname="" />}>
+          <SidebarNav />
+        </Suspense>
         <form action={signOut} className="mt-auto">
           <button
             type="submit"
@@ -47,7 +49,9 @@ export function AppShell({ children }: { children: ReactNode }) {
         </main>
       </div>
 
-      <BottomNav />
+      <Suspense fallback={<BottomNavView pathname="" />}>
+        <BottomNav />
+      </Suspense>
     </div>
   );
 }
