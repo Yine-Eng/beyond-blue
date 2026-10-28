@@ -3,6 +3,8 @@ import { expect, type Page } from "@playwright/test";
 
 /** Fails the test on any serious or critical WCAG 2.1 A/AA violation. */
 export async function expectNoA11yViolations(page: Page) {
+  // After a client-side navigation the <title> streams in with the metadata; wait for it.
+  await page.waitForFunction(() => document.title.trim().length > 0);
   const results = await new AxeBuilder({ page })
     .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
     .analyze();

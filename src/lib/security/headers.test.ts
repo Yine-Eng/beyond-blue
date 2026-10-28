@@ -16,9 +16,11 @@ describe("buildContentSecurityPolicy", () => {
       NEXT_PUBLIC_SUPABASE_URL: SUPABASE,
     });
     expect(directive(csp, "connect-src")).toBe(
-      `connect-src 'self' ${SUPABASE} wss://abcdefgh.supabase.co`,
+      `connect-src 'self' data: ${SUPABASE} wss://abcdefgh.supabase.co`,
     );
-    expect(directive(csp, "script-src")).not.toContain("unsafe-eval");
+    // WebAssembly only (react-pdf); JavaScript eval stays blocked.
+    expect(directive(csp, "script-src")).toContain("'wasm-unsafe-eval'");
+    expect(directive(csp, "script-src")).not.toContain(" 'unsafe-eval'");
     expect(csp).not.toContain("vercel.live");
     expect(directive(csp, "frame-ancestors")).toBe("frame-ancestors 'none'");
     expect(directive(csp, "object-src")).toBe("object-src 'none'");
@@ -48,7 +50,7 @@ describe("buildContentSecurityPolicy", () => {
 
   it("works without Supabase configured", () => {
     const csp = buildContentSecurityPolicy({ NODE_ENV: "production" });
-    expect(directive(csp, "connect-src")).toBe("connect-src 'self'");
+    expect(directive(csp, "connect-src")).toBe("connect-src 'self' data:");
   });
 });
 
