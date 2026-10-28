@@ -62,8 +62,9 @@ export async function requestMagicLink(
   );
 }
 
+/** Signs out this browser only. The default "global" scope would end every session on the account. */
 export async function signOut(): Promise<void> {
   const supabase = await createSupabaseServerClient();
-  await supabase.auth.signOut();
+  await supabase.auth.signOut({ scope: "local" });
   redirect("/");
 }

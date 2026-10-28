@@ -46,6 +46,6 @@ export async function resetDemo(): Promise<void> {
 /** Leaves the demo and starts a real account. */
 export async function leaveDemo(): Promise<void> {
   const supabase = await createSupabaseServerClient();
-  await supabase.auth.signOut();
+  await supabase.auth.signOut({ scope: "local" });
   redirect("/sign-in");
 }

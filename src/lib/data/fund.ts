@@ -8,11 +8,25 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 const REQUEST_COLUMNS =
   "id, category, amount_cents, next_step, justification, document_path, needed_by, status, rubric, reviewer_notes, submitted_at, decided_at, updated_at";
 
-/** Staff and admins only; everyone else goes back to their own screens. */
-export const requireStaff = cache(async () => {
+/**
+ * Who is signed in and whether they're staff. The role always comes from the database (never a
+ * JWT claim), so a role change applies on the next request with no new sign-in, and a role check
+ * never touches the session.
+ */
+export const getStaffAccess = cache(async () => {
   const ctx = await getStudentContext();
-  if (ctx.profile.role !== "staff" && ctx.profile.role !== "admin") redirect("/plan");
-  return ctx;
+  const isStaff = ctx.profile.role === "staff" || ctx.profile.role === "admin";
+  return { ...ctx, isStaff };
+});
+
+/**
+ * Staff and admins only. The staff layout already shows non-staff a "Staff only" page without
+ * rendering the route, so this is defence in depth for data loaders and Server Actions.
+ */
+export const requireStaff = cache(async () => {
+  const access = await getStaffAccess();
+  if (!access.isStaff) redirect("/staff");
+  return access;
 });
 
 export async function getFundBalance() {
