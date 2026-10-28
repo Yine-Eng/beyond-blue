@@ -56,6 +56,7 @@ test("non-staff see a Staff only page and stay signed in", async ({ page, signIn
     await page.goto(path);
     await expect(page.getByRole("heading", { level: 1, name: "Staff only" })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Last Mile Fund review" })).toHaveCount(0);
+    await expect(page.getByRole("navigation", { name: "Staff" })).toHaveCount(0);
   }
   await expectNoA11yViolations(page);
   // Still signed in: the app sends a student without a plan to onboarding, not to sign-in.

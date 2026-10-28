@@ -8,6 +8,22 @@ import { signOut } from "@/lib/actions/auth";
 import { leaveDemo } from "@/lib/actions/demo";
 import { getStaffAccess } from "@/lib/data/fund";
 
+/** Only staff (and the staff demo) see the staff links; everyone else gets the "Staff only" note. */
+async function StaffNav() {
+  const { isStaff } = await getStaffAccess();
+  if (!isStaff) return null;
+  return (
+    <nav aria-label="Staff" className="text-cream-50 flex gap-1 font-semibold">
+      <Link href="/staff" className="rounded-button px-3 py-2 hover:bg-white/10">
+        Dashboard
+      </Link>
+      <Link href="/staff/fund" className="rounded-button px-3 py-2 hover:bg-white/10">
+        Fund review
+      </Link>
+    </nav>
+  );
+}
+
 /** Non-staff stay signed in and see a short explanation; the staff page itself never renders. */
 async function StaffGate({ children }: { children: ReactNode }) {
   const { isStaff, isDemo } = await getStaffAccess();
@@ -70,14 +86,9 @@ export default function StaffLayout({ children }: { children: ReactNode }) {
         <Link href="/staff" className="bg-navy-800 -rotate-1 rounded-sm px-3 py-1.5">
           <Wordmark />
         </Link>
-        <nav aria-label="Staff" className="text-cream-50 flex gap-1 font-semibold">
-          <Link href="/staff" className="rounded-button px-3 py-2 hover:bg-white/10">
-            Dashboard
-          </Link>
-          <Link href="/staff/fund" className="rounded-button px-3 py-2 hover:bg-white/10">
-            Fund review
-          </Link>
-        </nav>
+        <Suspense fallback={null}>
+          <StaffNav />
+        </Suspense>
         <form action={signOut} className="ml-auto">
           <button
             type="submit"
