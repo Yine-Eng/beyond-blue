@@ -21,7 +21,7 @@ export function FaqSection() {
           <AccordionItem
             key={question}
             value={`q${i}`}
-            className={`${i % 4 === 0 || i % 4 === 3 ? "bg-blue-100" : "bg-area-financial"} rounded-[var(--radius-card)] border-0 px-5`}
+            className={`${i % 4 === 0 || i % 4 === 3 ? "bg-blue-100" : "bg-area-financial"} rounded-card border-0 px-5`}
           >
             <AccordionTrigger className="text-navy-900 gap-4 py-5 text-left font-serif text-lg font-bold hover:no-underline">
               <span className="flex items-start gap-4">

@@ -70,7 +70,7 @@ export function BudgetSection() {
             // Scrollable regions must be keyboard-reachable (WCAG 2.1.1, axe scrollable-region-focusable).
             // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
             tabIndex={0}
-            className="overflow-x-auto rounded-[var(--radius-card)] border"
+            className="rounded-card overflow-x-auto border"
           >
             <table className="w-full min-w-[34rem] border-collapse text-left text-sm">
               <caption className="sr-only">

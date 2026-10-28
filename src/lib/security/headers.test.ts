@@ -31,6 +31,15 @@ describe("buildContentSecurityPolicy", () => {
     expect(directive(csp, "frame-src")).toBe("frame-src https://vercel.live");
   });
 
+  it("only upgrades insecure requests on Vercel, where the site is always HTTPS", () => {
+    expect(buildContentSecurityPolicy({ NODE_ENV: "production" })).not.toContain(
+      "upgrade-insecure-requests",
+    );
+    expect(buildContentSecurityPolicy({ NODE_ENV: "production", VERCEL_ENV: "preview" })).toContain(
+      "upgrade-insecure-requests",
+    );
+  });
+
   it("allows eval in development for React debugging", () => {
     const csp = buildContentSecurityPolicy({ NODE_ENV: "development" });
     expect(directive(csp, "script-src")).toContain("'unsafe-eval'");

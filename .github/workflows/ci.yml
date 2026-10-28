@@ -36,6 +36,12 @@ jobs:
   e2e:
     name: e2e
     runs-on: ubuntu-latest
+    # Signed-in journeys (demo mode) run against the real project when these secrets exist;
+    # without them those tests skip and the signed-out suite still runs.
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+      NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY }}
+      SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
@@ -55,3 +61,15 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 7
+
+  db:
+    name: db
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 2.122.0
+      # Auth and Storage create the auth.* and storage.* schemas the migrations rely on.
+      - run: supabase start -x realtime,studio,imgproxy,edge-runtime,logflare,vector,supavisor,postgres-meta,mailpit
+      - run: supabase test db

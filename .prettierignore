@@ -14,3 +14,5 @@ AGENTS.md
 
 # OG image font (OFL licence text is not code)
 src/app/_og/
+src/lib/supabase/database.types.ts
+supabase/.temp/

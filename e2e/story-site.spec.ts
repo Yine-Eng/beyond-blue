@@ -28,13 +28,15 @@ test.describe("story site", () => {
     await expect(page.getByRole("tabpanel")).toContainText("I'm continuing my education.");
   });
 
-  test("demo CTA opens the app", async ({ page }) => {
+  test("demo CTAs are form buttons, never prefetchable links", async ({ page }) => {
     await page.goto("/");
-    await page
-      .getByRole("link", { name: /Try the demo as Veronica/ })
-      .first()
-      .click();
-    await expect(page).toHaveURL(/\/home$/);
+    // Hero, final CTA and header. The journey itself is covered in demo.spec.ts.
+    await expect(page.getByRole("button", { name: /Try the demo/ })).toHaveCount(3);
+    await expect(page.getByRole("link", { name: /Try the demo/ })).toHaveCount(0);
+    await expect(page.getByRole("link", { name: "Get started" }).first()).toHaveAttribute(
+      "href",
+      "/sign-in",
+    );
   });
 
   test("FAQ answers expand with the deck wording", async ({ page }) => {

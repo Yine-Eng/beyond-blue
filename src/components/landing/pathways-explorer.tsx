@@ -47,7 +47,7 @@ export function PathwaysExplorer() {
         return (
           <TabsContent key={id} value={id}>
             <div
-              className="shadow-paper rounded-[var(--radius-card)] p-6 sm:p-8"
+              className="shadow-paper rounded-card p-6 sm:p-8"
               style={{ background: palette[fill], color: palette[onFill] }}
             >
               <div className="flex items-start gap-4">

@@ -2,7 +2,8 @@ import Link from "next/link";
 import { Wordmark } from "@/components/brand/wordmark";
 import { Doodle, PaperCard, Tape } from "@/components/scrapbook";
 import { Button } from "@/components/ui/button";
-import { DEMO_HREF, GET_STARTED_HREF, hero } from "@/content/copy/landing";
+import { DemoButton } from "@/components/demo/demo-button";
+import { GET_STARTED_HREF, hero } from "@/content/copy/landing";
 import { finalCta, footer } from "@/content/copy/story-end";
 
 export function FinalCta() {
@@ -23,9 +24,7 @@ export function FinalCta() {
         </h2>
         <p className="text-body-lg text-ink-600 mx-auto mt-3 max-w-xl">{finalCta.body}</p>
         <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-          <Button asChild variant="accent" size="lg" className="w-full sm:w-auto">
-            <Link href={DEMO_HREF}>{hero.demoCta} →</Link>
-          </Button>
+          <DemoButton label={`${hero.demoCta} →`} className="w-full sm:w-auto" />
           <Button asChild size="lg" className="w-full sm:w-auto">
             <Link href={GET_STARTED_HREF}>{hero.startCta}</Link>
           </Button>

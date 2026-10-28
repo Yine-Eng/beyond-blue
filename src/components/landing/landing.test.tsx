@@ -1,19 +1,19 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it } from "vitest";
-import { DEMO_HREF } from "@/content/copy/landing";
+import { describe, expect, it, vi } from "vitest";
 import { PATHWAYS } from "@/content/pathways";
 import { Hero } from "./hero";
 import { PathwaysExplorer } from "./pathways-explorer";
 
+// The real action is server-only; the hero only needs something to post to.
+vi.mock("@/lib/actions/demo", () => ({ startDemo: vi.fn() }));
+
 describe("Hero", () => {
-  it("names the product in the page's only h1 and links to the demo", () => {
+  it("names the product in the page's only h1 and offers the demo as a button", () => {
     render(<Hero />);
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Beyond Blue");
-    expect(screen.getByRole("link", { name: /Try the demo as Veronica/ })).toHaveAttribute(
-      "href",
-      DEMO_HREF,
-    );
+    // A form button, not a link, so router prefetching can never start demo sessions.
+    expect(screen.getByRole("button", { name: /Try the demo as Veronica/ })).toBeInTheDocument();
   });
 });
 

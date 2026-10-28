@@ -28,7 +28,7 @@ export function HowItWorks() {
           return (
             <li key={title}>
               <Reveal className="h-full">
-                <article className={`${card} h-full rounded-[var(--radius-card)] p-6`}>
+                <article className={`${card} rounded-card h-full p-6`}>
                   <div className="flex items-start gap-3">
                     <span
                       aria-hidden="true"

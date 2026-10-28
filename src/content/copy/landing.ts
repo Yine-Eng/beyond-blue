@@ -4,7 +4,7 @@
  */
 
 export const DEMO_HREF = "/demo";
-export const GET_STARTED_HREF = "/home";
+export const GET_STARTED_HREF = "/sign-in";
 
 export const hero = {
   question: "What happens after graduation?",
