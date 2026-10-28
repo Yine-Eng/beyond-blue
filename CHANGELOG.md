@@ -4,6 +4,16 @@ All notable changes to Beyond Blue are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/).
 
+## [1.0.0] - 2026-10-28
+
+### Features
+
+- **pwa:** Make beyond blue installable with an offline page (#91)
+
+### Documentation
+
+- **repo:** Readme with screenshots and qr code, a11y report and mobile fixes (#94)
+
 ## [0.5.0] - 2026-10-28
 
 ### Features
