@@ -1,0 +1,45 @@
+# git-cliff configuration: generates CHANGELOG.md from Conventional Commits.
+# Usage: npx git-cliff@2.14.2 --tag vX.Y.Z -o CHANGELOG.md   (see docs/git-workflow.md §7)
+
+[changelog]
+header = """
+# Changelog
+
+All notable changes to Beyond Blue are documented here. The format follows
+[Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
+[Semantic Versioning](https://semver.org/).\n
+"""
+body = """
+{% if version %}\
+## [{{ version | trim_start_matches(pat="v") }}] - {{ timestamp | date(format="%Y-%m-%d") }}
+{% else %}\
+## [Unreleased]
+{% endif %}\
+{% for group, commits in commits | group_by(attribute="group") %}
+### {{ group | striptags | trim | upper_first }}
+{% for commit in commits %}
+- {% if commit.scope %}**{{ commit.scope }}:** {% endif %}{{ commit.message | upper_first }}\
+{% endfor %}
+{% endfor %}\n
+"""
+footer = ""
+trim = true
+
+[git]
+conventional_commits = true
+filter_unconventional = true
+split_commits = false
+protect_breaking_commits = true
+tag_pattern = "v[0-9].*"
+sort_commits = "oldest"
+commit_parsers = [
+  { message = "^feat", group = "<!-- 0 -->Features" },
+  { message = "^fix", group = "<!-- 1 -->Bug fixes" },
+  { message = "^perf", group = "<!-- 2 -->Performance" },
+  { message = "^docs", group = "<!-- 3 -->Documentation" },
+  { message = "^test", group = "<!-- 4 -->Tests" },
+  { message = "^(build|ci)", group = "<!-- 5 -->Build and CI" },
+  { message = "^chore\\(release\\)", skip = true },
+  { message = "^(chore|refactor|style)", group = "<!-- 6 -->Maintenance" },
+  { message = "^revert", group = "<!-- 7 -->Reverts" },
+]
