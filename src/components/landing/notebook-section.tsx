@@ -23,7 +23,7 @@ export function NotebookSection({
     <section
       id={id}
       aria-labelledby={labelledBy}
-      className="scroll-mt-20 px-4 py-8 sm:px-6 sm:py-12"
+      className="defer-render scroll-mt-20 px-4 py-8 sm:px-6 sm:py-12"
     >
       <PaperCard
         variant={variant}

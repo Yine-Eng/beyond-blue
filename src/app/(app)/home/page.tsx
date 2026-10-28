@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import { CountdownHero } from "@/components/plan/countdown-hero";
 import { FocusCard } from "@/components/plan/focus-card";
 import { PlanSkeleton } from "@/components/plan/plan-skeleton";
+import { InstallCard } from "@/components/pwa/install-card";
 import { Button } from "@/components/ui/button";
 import { getPlan } from "@/lib/data/plan";
 import { greetingFor } from "@/lib/domain/greeting";
@@ -38,6 +39,7 @@ async function HomeContent() {
           See your full plan <ArrowRight aria-hidden="true" />
         </Link>
       </Button>
+      <InstallCard />
     </div>
   );
 }

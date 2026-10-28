@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { ServiceWorker } from "@/components/pwa/service-worker";
 import { getSiteUrl } from "@/lib/site-url";
 import { cn } from "@/lib/utils";
 import { fontVariables } from "./fonts";
@@ -13,6 +14,11 @@ export const metadata: Metadata = {
   description:
     "From Countdown to Launchpad: a 100-day transition experience for every graduating senior at Bluefield State University.",
   applicationName: "Beyond Blue",
+  appleWebApp: { capable: true, title: "Beyond Blue", statusBarStyle: "black-translucent" },
+  icons: {
+    icon: [{ url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" }],
+    apple: [{ url: "/icons/apple-touch-icon.png", sizes: "180x180" }],
+  },
   authors: [{ name: "Team Northbound" }],
   keywords: ["Bluefield State University", "graduation", "career readiness", "HBCU", "transition"],
   openGraph: {
@@ -37,7 +43,10 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={cn("h-full antialiased", fontVariables)}>
-      <body className="flex min-h-full flex-col">{children}</body>
+      <body className="flex min-h-full flex-col">
+        {children}
+        <ServiceWorker />
+      </body>
     </html>
   );
 }
