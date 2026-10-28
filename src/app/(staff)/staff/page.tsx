@@ -6,13 +6,14 @@ import {
   KpiTiles,
   PathwayProgress,
 } from "@/components/staff/cohort-dashboard";
+import { DayPlus100Insights } from "@/components/staff/day-plus-100-insights";
 import { getStaffDashboard } from "@/lib/data/staff";
 
 export const metadata: Metadata = { title: "Staff dashboard" };
 
 /** Program overview for Career Services and Student Success (PRD US-STAFF-1/2). */
 export default async function StaffDashboardPage() {
-  const { overview, cohorts, fund } = await getStaffDashboard();
+  const { overview, cohorts, fund, insights } = await getStaffDashboard();
   return (
     <div className="flex flex-col gap-8">
       <header>
@@ -48,6 +49,13 @@ export default async function StaffDashboardPage() {
           or Student Success helps most here.
         </p>
         <AtRiskList overview={overview} />
+      </section>
+
+      <section aria-labelledby="d100-title">
+        <h2 id="d100-title" className="text-heading-md text-navy-900 mb-3 font-semibold">
+          Day +100 insights
+        </h2>
+        <DayPlus100Insights insights={insights} />
       </section>
 
       <section aria-labelledby="fund-title">
