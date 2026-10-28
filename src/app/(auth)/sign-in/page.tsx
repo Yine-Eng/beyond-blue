@@ -38,9 +38,9 @@ export default function SignInPage(props: PageProps<"/sign-in">) {
         <SignInContent searchParams={props.searchParams} />
       </Suspense>
       <p className="text-body-sm text-ink-600 border-t pt-4">
-        Just looking?{" "}
+        Judges and visitors: the demos need no sign-up.{" "}
         <Link href={DEMO_HREF} className="font-semibold text-blue-700 underline underline-offset-4">
-          Explore the demo as Veronica
+          Explore the demos
         </Link>
         .
       </p>

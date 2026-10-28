@@ -2,17 +2,26 @@ import type { z } from "zod";
 
 /** Typed result every Server Action returns (docs/adr/0003-data-access-pattern.md). */
 export type ActionResult<T = undefined> =
-  { ok: true; data: T } | { ok: false; error: string; fieldErrors?: Record<string, string[]> };
+  | { ok: true; data: T }
+  | {
+      ok: false;
+      error: string;
+      fieldErrors?: Record<string, string[]>;
+      /** A machine-readable reason, for forms that offer a different next step. */
+      code?: string;
+    };
 
 export const ok = <T>(data: T): ActionResult<T> => ({ ok: true, data });
 
 export const fail = (
   error: string,
   fieldErrors?: Record<string, string[]>,
+  code?: string,
 ): ActionResult<never> => ({
   ok: false,
   error,
   fieldErrors,
+  ...(code && { code }),
 });
 
 /** Turns a Zod error into per-field messages for forms. */
