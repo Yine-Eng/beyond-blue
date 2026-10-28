@@ -2,6 +2,35 @@
 
 Questions for Sampson before or during M0. Each has a **proposed default** so work isn't blocked; answer "default is fine" or override.
 
+## Resolved (27 Oct 2026, after PR #1)
+
+| # | Question | Decision |
+|---|---|---|
+| 1 | Key dates | Submission **29 Oct 2026**, judging **30 Oct 2026**. Plan backwards; cut stretch goals first, then M5. See `docs/roadmap.md` delivery schedule. |
+| 2 | Demo mode in M2 | Approved. |
+| 4 | FAQ text | Provided (slide 11), recorded verbatim below. Use exactly as written. |
+| 5 | Deck assets | Slides are exported locally into `deck/` (git-ignored, **never committed**). Tokens are sampled from those exports. |
+| 9 | Area windows | Approved: each area opens on its milestone day (Career 100, Financial 75, Relocation 50, Network 25). Wellness & Detour opens at Day 25 and the Detour plan is due by Day 0. |
+| 10 | Verification | Attaching an output completes the task and adds it to the Launch File. **One key output per area** can also get an optional "Verified" badge from a mentor or staff member. Verification never blocks progress. |
+| 11 | Fund cap | **$250 per request**, configurable by staff. |
+| 16 | Node.js | **Node 24 LTS** (`.nvmrc` = 24) with `"engines": { "node": ">=22" }`. |
+| 17 | Package manager | **npm**. |
+| 18 | Accounts | Vercel and Supabase exist under `Yine-Eng`. Supabase project "beyond-blue" (East US, RLS on). Keys go into `.env.local` by Sampson, never into chat or git. Vercel is connected after the M0 PR merges. |
+| 22 | Issue numbering | Accepted: scaffold is #2. |
+| 23 | Projects board | Created ("Beyond Blue Roadmap"). |
+
+### FAQ (deck slide 11, verbatim)
+
+1. **How is Beyond Blue different from Career Services?** Career Services is part of Beyond Blue, but Beyond Blue connects career support with financial readiness, relocation planning, wellness, alumni mentorship, and real-world action. Students do not just receive information; they complete pathway-specific tasks and leave with a personalized Launch File.
+2. **Who owns and runs Beyond Blue?** Career Services and Student Success would serve as the central owners, with support from Alumni Relations, Financial Aid, Counseling, faculty, employers, and Computer Science. Beyond Blue connects existing campus teams through one shared structure instead of creating a new office.
+3. **How do you ensure seniors actually participate?** Beyond Blue begins 100 days before graduation as a university-wide senior transition requirement. Students choose a pathway, complete shared milestones, and track progress through the app, with support from advisors and campus teams.
+4. **How will you measure success?** Success is measured at Day 100, graduation, and Day +100. We track whether students leave with a next-step plan, financial plan, mentor connection, transition plan, and backup plan, then use Day +100 feedback to improve the next cohort.
+5. **How does the Last Mile Fund work, and how is it managed fairly?** The fund covers small, verified expenses tied directly to a real next step, such as certification fees, interview travel, deposits, or relocation needs. Awards are capped, documented, and reviewed using the same criteria by a small campus team.
+6. **How does Beyond Blue continue after the initial $10,000?** The initial funding launches the system, while the curriculum, app infrastructure, mentor network, and program materials carry forward. Existing campus teams sustain the program, alumni strengthen the network, and Day +100 feedback helps improve it each year.
+
+## Still open
+Questions 3, 6, 7, 8, 12, 13, 14, 15, 19, 20, 21, 24 and 25 below still use their proposed defaults until answered.
+
 ## Timeline and scope
 
 1. **Key dates.** When are the competition submission deadline and judging day? This decides whether M3–M5 are built in full or trimmed so that M6 (demo polish) lands in time.
