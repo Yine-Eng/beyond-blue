@@ -432,6 +432,63 @@ export type Database = {
           },
         ]
       }
+      day_plus_100_surveys: {
+        Row: {
+          improve: string | null
+          most_useful: string | null
+          opt_in_give: boolean
+          opt_in_mentor: boolean
+          opt_in_session: boolean
+          outcome: string
+          pathway_id: string
+          stress: number
+          student_id: string
+          submitted_at: string
+          usefulness: number
+        }
+        Insert: {
+          improve?: string | null
+          most_useful?: string | null
+          opt_in_give?: boolean
+          opt_in_mentor?: boolean
+          opt_in_session?: boolean
+          outcome: string
+          pathway_id: string
+          stress: number
+          student_id: string
+          submitted_at?: string
+          usefulness: number
+        }
+        Update: {
+          improve?: string | null
+          most_useful?: string | null
+          opt_in_give?: boolean
+          opt_in_mentor?: boolean
+          opt_in_session?: boolean
+          outcome?: string
+          pathway_id?: string
+          stress?: number
+          student_id?: string
+          submitted_at?: string
+          usefulness?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "day_plus_100_surveys_pathway_id_fkey"
+            columns: ["pathway_id"]
+            isOneToOne: false
+            referencedRelation: "pathways"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "day_plus_100_surveys_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       detour_plans: {
         Row: {
           answers: Json
@@ -736,6 +793,26 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      day_plus_100_insights: {
+        Args: never
+        Returns: {
+          avg_usefulness: number | null
+          employed: number | null
+          enrolled: number | null
+          give_pct: number | null
+          less_stressed_pct: number | null
+          mentor_pct: number | null
+          more_stressed_pct: number | null
+          other: number | null
+          pathway_id: string | null
+          responses: number
+          same_stress_pct: number | null
+          searching: number | null
+          self_employed: number | null
+          session_pct: number | null
+          suppressed: boolean
+        }[]
+      }
       decide_fund_request: {
         Args: {
           p_id: string
@@ -792,6 +869,19 @@ export type Database = {
           p_id: string
         }
         Returns: Database["public"]["Tables"]["fund_requests"]["Row"]
+      }
+      submit_day_plus_100: {
+        Args: {
+          p_improve: string
+          p_most_useful: string
+          p_opt_in_give: boolean
+          p_opt_in_mentor: boolean
+          p_opt_in_session: boolean
+          p_outcome: string
+          p_stress: number
+          p_usefulness: number
+        }
+        Returns: Database["public"]["Tables"]["day_plus_100_surveys"]["Row"]
       }
       submit_fund_request: {
         Args: {
