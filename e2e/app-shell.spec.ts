@@ -17,6 +17,7 @@ test.describe("signed out", () => {
   test("sign-in page is accessible and validates the email", async ({ page }) => {
     await page.goto("/sign-in");
     await expectNoA11yViolations(page);
+    await expect(page.getByText("Judges and visitors: the demos need no sign-up.")).toBeVisible();
     await page.getByRole("button", { name: "Email me a sign-in link" }).click();
     await expect(page.getByText("Enter a valid email address.")).toBeVisible();
   });
