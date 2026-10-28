@@ -81,7 +81,7 @@ async function NetworkContent() {
                   className="rounded-card flex flex-wrap items-center gap-3 border bg-white p-4"
                 >
                   <Avatar name={c.mentor.display_name} index={i} />
-                  <div className="min-w-0 flex-1">
+                  <div className="min-w-[11rem] flex-1">
                     <p className="text-navy-900 font-semibold">{c.mentor.display_name}</p>
                     <p className="text-body-sm text-ink-600">
                       {c.mentor.role_title}
