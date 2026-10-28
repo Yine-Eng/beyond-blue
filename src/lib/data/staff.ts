@@ -31,10 +31,31 @@ export type FundSummary = {
   totalCents: number;
 };
 
+export type DayPlus100Insight = {
+  pathwayId: PathwayId | null;
+  responses: number;
+  suppressed: boolean;
+  outcomes: {
+    employed: number;
+    enrolled: number;
+    selfEmployed: number;
+    searching: number;
+    other: number;
+  } | null;
+  avgUsefulness: number | null;
+  lessStressedPct: number | null;
+  sameStressPct: number | null;
+  moreStressedPct: number | null;
+  mentorPct: number | null;
+  sessionPct: number | null;
+  givePct: number | null;
+};
+
 export type StaffDashboard = {
   overview: CohortOverview;
   cohorts: string[];
   fund: FundSummary;
+  insights: DayPlus100Insight[];
 };
 
 /**
@@ -46,7 +67,7 @@ export async function getStaffDashboard(): Promise<StaffDashboard> {
   await requireStaff();
   const supabase = await createSupabaseServerClient();
 
-  const [students, tasks, fundRows, balance] = await Promise.all([
+  const [students, tasks, fundRows, balance, insightsRes] = await Promise.all([
     fetchAll((from, to) =>
       supabase
         .from("profiles")
@@ -75,7 +96,9 @@ export async function getStaffDashboard(): Promise<StaffDashboard> {
         .range(from, to),
     ),
     getFundBalance(),
+    supabase.rpc("day_plus_100_insights"),
   ]);
+  if (insightsRes.error) throw insightsRes.error;
 
   const ids = students.map((s) => s.id);
   const completions = ids.length
@@ -131,7 +154,30 @@ export async function getStaffDashboard(): Promise<StaffDashboard> {
   };
   for (const r of fundRows) byStatus[r.status] += 1;
 
+  const insights: DayPlus100Insight[] = insightsRes.data.map((r) => ({
+    pathwayId: r.pathway_id as PathwayId | null,
+    responses: r.responses,
+    suppressed: r.suppressed,
+    outcomes: r.suppressed
+      ? null
+      : {
+          employed: r.employed ?? 0,
+          enrolled: r.enrolled ?? 0,
+          selfEmployed: r.self_employed ?? 0,
+          searching: r.searching ?? 0,
+          other: r.other ?? 0,
+        },
+    avgUsefulness: r.avg_usefulness,
+    lessStressedPct: r.less_stressed_pct,
+    sameStressPct: r.same_stress_pct,
+    moreStressedPct: r.more_stressed_pct,
+    mentorPct: r.mentor_pct,
+    sessionPct: r.session_pct,
+    givePct: r.give_pct,
+  }));
+
   return {
+    insights,
     overview,
     cohorts: [...new Set(students.map((s) => s.cohort?.name).filter((n): n is string => !!n))],
     fund: {
