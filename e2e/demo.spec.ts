@@ -170,6 +170,61 @@ test("Detour Challenge, then switch Hired → Higher Education without losing wo
   await expect(main.getByText("“Got into a funded master's program.”")).toBeVisible();
 });
 
+test("Launch File with PDF export, then a Last Mile Fund request", async ({ page }) => {
+  test.setTimeout(90_000);
+  await page.goto("/");
+  await page
+    .getByRole("button", { name: /Try the demo as Veronica/ })
+    .first()
+    .click();
+  await expect(page.getByRole("heading", { name: "Your 100-Day Curriculum" })).toBeVisible({
+    timeout: 30_000,
+  });
+  const main = page.locator("main");
+  const field = (label: string | RegExp) => page.getByLabel(label).filter({ visible: true });
+
+  // Launch File: six sections, saved outputs with pathway labels, mentors and empty states.
+  await page.goto("/launch-file");
+  await expect(page.getByRole("heading", { level: 1, name: "My Launch File" })).toBeVisible();
+  await expect(main.getByText(/12 outputs saved/)).toBeVisible();
+  for (const name of ["Next-step plan", "Financial prep", "My network", "Detour plan"])
+    await expect(main.getByRole("heading", { level: 2, name })).toBeVisible();
+  await expect(main.getByText("Halcyra Digital").first()).toBeVisible();
+  await expect(main.getByText(/Hired pathway/).first()).toBeVisible();
+  await expect(main.getByText("Marcus Bell")).toBeVisible();
+  await expect(main.getByRole("link", { name: /^Start: / }).first()).toBeVisible();
+  await expectNoA11yViolations(page);
+
+  await main.getByRole("button", { name: "Download PDF" }).click();
+  await expect(main.getByText("Your Launch File PDF is ready.")).toBeVisible({ timeout: 30_000 });
+
+  // Last Mile Fund: validation, then a request that shows up as submitted.
+  await page.goto("/fund");
+  await expect(
+    page.getByRole("heading", { level: 1, name: "Small grants for the last mile" }),
+  ).toBeVisible();
+  await expectNoA11yViolations(page);
+  await field("What is it for?").selectOption("deposit");
+  await field(/Amount/).fill("400");
+  await field("Which next step does this unlock?").fill("Sign my first lease in Atlanta");
+  await field("Why do you need help with this cost?").fill("Too short.");
+  await field("Needed by").fill("2027-05-20");
+  await page.getByRole("button", { name: "Send my request" }).click();
+  await expect(page.getByText(/at least 50 characters/)).toBeVisible({ timeout: 20_000 });
+  await field("Why do you need help with this cost?").fill(
+    "The apartment deposit is due two weeks before my first paycheck arrives in June.",
+  );
+  await page.getByRole("button", { name: "Send my request" }).click();
+  await expect(page.getByText("Requests are capped at $250.")).toBeVisible({ timeout: 20_000 });
+  await field(/Amount/).fill("200");
+  await page.getByRole("button", { name: "Send my request" }).click();
+  await expect(main.getByRole("heading", { name: "Your request" })).toBeVisible({
+    timeout: 20_000,
+  });
+  await expect(main.getByText("$200 · Housing deposit")).toBeVisible();
+  await expect(main.getByText("Submitted", { exact: true })).toBeVisible();
+});
+
 test("the /demo page starts nothing until you press the button", async ({ page }) => {
   await page.goto("/demo");
   await expect(

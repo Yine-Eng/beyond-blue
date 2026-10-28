@@ -23,12 +23,22 @@ export function buildContentSecurityPolicy(env: Env): string {
 
   const directives: Record<string, string[]> = {
     "default-src": ["'self'"],
-    "script-src": ["'self'", "'unsafe-inline'", ...(isDev ? ["'unsafe-eval'"] : []), ...vercelLive],
+    // 'wasm-unsafe-eval' lets the Launch File PDF compile react-pdf's WebAssembly layout engine;
+    // it does not allow JavaScript eval.
+    "script-src": [
+      "'self'",
+      "'unsafe-inline'",
+      "'wasm-unsafe-eval'",
+      ...(isDev ? ["'unsafe-eval'"] : []),
+      ...vercelLive,
+    ],
     "style-src": ["'self'", "'unsafe-inline'"],
     "img-src": ["'self'", "blob:", "data:", ...supabase.slice(0, 1), ...vercelLive],
     "font-src": ["'self'", "data:", ...vercelLive],
     "connect-src": [
       "'self'",
+      // react-pdf loads that WebAssembly module from a data: URL.
+      "data:",
       ...supabase,
       ...vercelLive,
       ...(isPreview ? ["wss://ws-us3.pusher.com"] : []),
