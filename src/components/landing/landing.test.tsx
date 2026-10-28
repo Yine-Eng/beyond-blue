@@ -6,7 +6,7 @@ import { Hero } from "./hero";
 import { PathwaysExplorer } from "./pathways-explorer";
 
 // The real action is server-only; the hero only needs something to post to.
-vi.mock("@/lib/actions/demo", () => ({ startDemo: vi.fn() }));
+vi.mock("@/lib/actions/demo", () => ({ startDemo: vi.fn(), startStaffDemo: vi.fn() }));
 
 describe("Hero", () => {
   it("names the product in the page's only h1 and offers the demo as a button", () => {

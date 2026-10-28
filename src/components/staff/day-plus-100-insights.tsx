@@ -19,7 +19,13 @@ export function DayPlus100Insights({ insights }: { insights: DayPlus100Insight[]
   const rows = [overall, ...insights.filter((i) => i.pathwayId !== null)];
   return (
     <div className="flex flex-col gap-2">
-      <div className="rounded-card overflow-x-auto border bg-white">
+      <div
+        // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- a scrollable region must be keyboard-focusable (WCAG 2.1.1)
+        tabIndex={0}
+        role="region"
+        aria-label="Day +100 results by pathway (scrolls sideways)"
+        className="rounded-card overflow-x-auto border bg-white"
+      >
         <table className="w-full min-w-[46rem] border-collapse text-sm">
           <caption className="sr-only">
             Day +100 check-in results by pathway, as counts and percentages

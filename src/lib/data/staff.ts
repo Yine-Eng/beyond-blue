@@ -6,6 +6,7 @@ import { getFundBalance, requireStaff } from "@/lib/data/fund";
 import { type CohortOverview, cohortOverview } from "@/lib/domain/cohort";
 import { daysToGraduation } from "@/lib/domain/countdown";
 import type { AreaId } from "@/lib/design/tokens";
+import { demoStaffDashboard } from "@/lib/demo/staff";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { FundStatus } from "@/content/fund";
 
@@ -64,7 +65,8 @@ export type StaffDashboard = {
  */
 export async function getStaffDashboard(): Promise<StaffDashboard> {
   await connection();
-  await requireStaff();
+  const access = await requireStaff();
+  if (access.isDemo) return demoStaffDashboard(access.user.id);
   const supabase = await createSupabaseServerClient();
 
   const [students, tasks, fundRows, balance, insightsRes] = await Promise.all([

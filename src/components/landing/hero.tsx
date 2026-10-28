@@ -2,7 +2,7 @@ import { GraduationCap } from "lucide-react";
 import Link from "next/link";
 import { Doodle, PaperCard, Sticker, Tape } from "@/components/scrapbook";
 import { Button } from "@/components/ui/button";
-import { DemoButton } from "@/components/demo/demo-button";
+import { DemoButton, StaffDemoButton } from "@/components/demo/demo-button";
 import { GET_STARTED_HREF, hero } from "@/content/copy/landing";
 
 const STACK_TONES = ["bg-blue-200", "bg-cream-100", "bg-gold-400", "bg-blue-300"] as const;
@@ -50,6 +50,9 @@ export function Hero() {
                 <Link href={GET_STARTED_HREF}>{hero.startCta}</Link>
               </Button>
             </div>
+            <p className="text-body-sm text-ink-600 mt-3 flex flex-wrap items-center justify-center gap-x-1 lg:justify-start">
+              Program staff? <StaffDemoButton />
+            </p>
 
             <div className="mt-8 flex flex-col items-center gap-1 lg:items-start">
               <Sticker tilt={-2}>{hero.presentedBy}</Sticker>
