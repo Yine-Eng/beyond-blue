@@ -11,7 +11,9 @@ export default function MarketingLayout({ children }: LayoutProps<"/">) {
       </a>
       <SiteHeader />
       {/* Flat royal blue keeps paint cheap on a long page; the sunburst sits behind the hero only. */}
-      <div className="bg-royal-700 text-ink-900 flex-1">
+      {/* overflow-x-clip: tape and doodles overhang their cards; clip here, not on <body>, because
+          body overflow propagates to the viewport, where mobile Safari can still pan sideways. */}
+      <div className="bg-royal-700 text-ink-900 flex-1 overflow-x-clip">
         <main id="story" tabIndex={-1}>
           {children}
         </main>
