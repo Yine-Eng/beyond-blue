@@ -1,4 +1,4 @@
-import { ArrowLeft, BadgeCheck, LifeBuoy } from "lucide-react";
+import { ArrowLeft, ArrowRight, BadgeCheck, LifeBuoy } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -7,6 +7,7 @@ import { AREA_META, OUTPUT_LABEL } from "@/components/plan/area-meta";
 import { PlanSkeleton } from "@/components/plan/plan-skeleton";
 import { StatusChip } from "@/components/plan/status-chip";
 import { ShareToggle } from "@/components/tasks/share-toggle";
+import { Button } from "@/components/ui/button";
 import { TaskOutputForm } from "@/components/tasks/task-output-form";
 import type { FormId } from "@/content/curriculum";
 import { FORMS } from "@/content/curriculum";
@@ -85,6 +86,15 @@ async function TaskContent({ taskId }: { taskId: string }) {
             Need help? Reach out to {detail.support.map((s) => SUPPORT_LABEL[s] ?? s).join(", ")}.
           </span>
         </p>
+      )}
+
+      {task.formId === "detour-plan" && (
+        <Button asChild size="lg">
+          <Link href="/detour">
+            {completion ? "Revisit the Detour Challenge" : "Start the Detour Challenge"}{" "}
+            <ArrowRight aria-hidden="true" />
+          </Link>
+        </Button>
       )}
 
       <section aria-labelledby="output-title">
