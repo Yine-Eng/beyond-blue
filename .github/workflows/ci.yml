@@ -36,6 +36,12 @@ jobs:
   e2e:
     name: e2e
     runs-on: ubuntu-latest
+    # Signed-in journeys (demo mode) run against the real project when these secrets exist;
+    # without them those tests skip and the signed-out suite still runs.
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+      NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY }}
+      SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
