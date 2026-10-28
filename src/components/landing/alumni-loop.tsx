@@ -84,7 +84,7 @@ export function AlumniLoopCycle() {
                 key={step.title}
                 aria-current={isActive ? "step" : undefined}
                 className={cn(
-                  "relative rounded-[var(--radius-card)] border-2 p-4 transition-[transform,background-color,border-color] duration-300 lg:absolute lg:w-64",
+                  "rounded-card relative border-2 p-4 transition-[transform,background-color,border-color] duration-300 lg:absolute lg:w-64",
                   POSITIONS[i],
                   isActive
                     ? "border-navy-900 bg-blue-100 lg:scale-105"

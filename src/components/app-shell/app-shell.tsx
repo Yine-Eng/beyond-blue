@@ -1,6 +1,8 @@
+import { LogOut } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { Wordmark } from "@/components/brand/wordmark";
+import { signOut } from "@/lib/actions/auth";
 import { BottomNav, SidebarNav } from "./app-nav";
 
 /** Authenticated app frame: sidebar on desktop, header + bottom tabs on phones. */
@@ -19,6 +21,15 @@ export function AppShell({ children }: { children: ReactNode }) {
           <Wordmark />
         </Link>
         <SidebarNav />
+        <form action={signOut} className="mt-auto">
+          <button
+            type="submit"
+            className="text-cream-50 rounded-button flex min-h-11 w-full items-center gap-3 px-4 py-2 hover:bg-white/10"
+          >
+            <LogOut aria-hidden="true" className="size-5" />
+            Sign out
+          </button>
+        </form>
       </aside>
 
       <div className="flex min-w-0 flex-1 flex-col">

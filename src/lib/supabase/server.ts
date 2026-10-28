@@ -10,8 +10,10 @@ import { getSupabasePublicEnv } from "./env";
  * a <Suspense> boundary (Cache Components).
  */
 export async function createSupabaseServerClient() {
-  const { url, publishableKey } = getSupabasePublicEnv();
+  // Read cookies first: during prerendering this postpones the work to request time, so a build
+  // without Supabase env vars (e.g. CI) never reaches the env check.
   const cookieStore = await cookies();
+  const { url, publishableKey } = getSupabasePublicEnv();
 
   return createServerClient<Database>(url, publishableKey, {
     cookies: {

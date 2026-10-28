@@ -179,7 +179,7 @@ export default function UiKitPage() {
       </Section>
 
       <Section title="Scrapbook kit">
-        <BurstBackground className="flex flex-col gap-10 rounded-[var(--radius-card)] p-6 sm:p-10">
+        <BurstBackground className="rounded-card flex flex-col gap-10 p-6 sm:p-10">
           <div className="bg-navy-800 -rotate-1 self-start px-5 py-2">
             <Wordmark className="text-5xl" />
           </div>
@@ -229,7 +229,7 @@ export default function UiKitPage() {
             Veronica starts her path.
           </MarkerHeading>
         </PaperCard>
-        <NotebookLines className="rounded-[var(--radius-card)] px-6 py-8">
+        <NotebookLines className="rounded-card px-6 py-8">
           <p className="font-hand text-navy-900 text-2xl">NotebookLines</p>
           <p className="text-ink-600">Ruled paper for empty states and the Detour builder.</p>
         </NotebookLines>

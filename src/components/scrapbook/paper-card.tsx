@@ -38,7 +38,7 @@ export function PaperCard({
       className={cn(
         "relative p-5 sm:p-6",
         card,
-        torn ? "shadow-none" : "shadow-paper rounded-[var(--radius-card)]",
+        torn ? "shadow-none" : "shadow-paper rounded-card",
         variant === "spiral" && "pl-10 sm:pl-12",
         variant === "pinned" && "motion-safe:rotate-(--tilt)",
         className,
