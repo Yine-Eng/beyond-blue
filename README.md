@@ -59,6 +59,13 @@ Five pathways: **Hired · Job Search · Higher Education · Entrepreneurship · 
   <img src="docs/images/desktop-plan.png" alt="Desktop plan screen with sidebar navigation" width="80%">
 </p>
 
+**Staff side (demo):** a fictional pilot cohort. Tap *View as staff (demo)* on the live site.
+
+<p align="center">
+  <img src="docs/images/desktop-staff.png" alt="Staff cohort dashboard: 60 students, average progress, at-risk count, open fund requests, and progress bars by pathway" width="62%">
+  <img src="docs/images/mobile-staff.png" alt="Staff cohort dashboard on a phone, with the staff demo banner" width="22%">
+</p>
+
 ## How it's built
 
 ```mermaid
