@@ -31,7 +31,7 @@ const COMPLETIONS: Completion[] = [
   {
     task: "hired.career.offer-review",
     form: {
-      organization: "Peachtree Digital",
+      organization: "Halcyra Digital",
       role: "Associate Program Manager",
       startDate: "2027-06-14",
       location: "Atlanta, GA (hybrid)",
@@ -214,9 +214,8 @@ async function seedConnections(
         mentor_id: marcus,
         status: "accepted" as const,
         match_score: 98,
-        match_reason:
-          "Also lives in Atlanta, GA · Works at Peachtree Digital · Works in Technology",
-        note: "Hi Marcus! I'm starting at Peachtree Digital in June and would love advice on the move.",
+        match_reason: "Also lives in Atlanta, GA · Works at Halcyra Digital · Works in Technology",
+        note: "Hi Marcus! I'm starting at Halcyra Digital in June and would love advice on the move.",
         requested_at: new Date(Date.now() - 9 * day).toISOString(),
         responded_at: new Date(Date.now() - 8 * day).toISOString(),
       },
@@ -225,7 +224,7 @@ async function seedConnections(
         mentor_id: alicia,
         status: "pending" as const,
         match_score: 88,
-        match_reason: "Works at Peachtree Digital · Works in Technology · Mentors Hired students",
+        match_reason: "Works at Halcyra Digital · Works in Technology · Mentors Hired students",
         note: "Hi Alicia, I'd love to hear how you moved from program work into engineering.",
         requested_at: new Date(Date.now() - 1 * day).toISOString(),
       },
@@ -240,7 +239,7 @@ async function seedConnections(
       met_on: addDays(todayInTimeZone(TIME_ZONE), -5),
       topic: "Moving to Atlanta",
       notes:
-        "Talked through neighborhoods near MARTA and what the first two weeks at Peachtree look like.",
+        "Talked through neighborhoods near MARTA and what the first two weeks at Halcyra look like.",
     });
 
   // Veronica shares her budget with her mentors.
