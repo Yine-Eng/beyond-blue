@@ -1,0 +1,30 @@
+name: Feature
+description: A new capability or improvement
+title: "<short, imperative title>"
+labels: ["type:feature"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What should exist, and who is it for?
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: Testable checkboxes.
+      value: |
+        - [ ]
+    validations:
+      required: true
+  - type: dropdown
+    id: size
+    attributes:
+      label: Estimate
+      options: ["XS (≤ 1 h)", "S (≤ 3 h)", "M (≤ 1 day)", "L (≤ 2 days)", "XL (> 2 days, split it)"]
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes, links, designs
