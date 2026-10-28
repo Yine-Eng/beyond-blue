@@ -53,7 +53,7 @@ async function FundContent() {
           </div>
           {open.status === "needs_info" ? (
             <>
-              <div role="status" className="bg-area-career rounded-card p-4">
+              <div role="status" className="bg-area-wellness rounded-card p-4">
                 <p className="text-navy-900 font-semibold">The review team needs a little more.</p>
                 {open.reviewer_notes && (
                   <p className="text-ink-900 mt-1">&ldquo;{open.reviewer_notes}&rdquo;</p>

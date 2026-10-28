@@ -20,7 +20,7 @@ export const categoryLabel = (id: FundCategory) =>
 export const FUND_STATUS: Record<FundStatus, { label: string; tone: string }> = {
   submitted: { label: "Submitted", tone: "bg-blue-100 text-blue-700" },
   in_review: { label: "In review", tone: "bg-area-financial text-gold-800" },
-  needs_info: { label: "Needs info", tone: "bg-area-career text-pink-700" },
+  needs_info: { label: "Needs info", tone: "bg-area-wellness text-pink-700" },
   approved: { label: "Approved", tone: "bg-success-50 text-green-700" },
   declined: { label: "Declined", tone: "bg-cream-200 text-ink-900" },
 };
