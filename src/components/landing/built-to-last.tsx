@@ -34,7 +34,7 @@ export function BuiltToLast() {
             <li key={title}>
               <Reveal tilt={0}>
                 <div
-                  className={`${blue ? "bg-blue-100" : "bg-area-financial"} flex items-start gap-4 rounded-[var(--radius-card)] p-5`}
+                  className={`${blue ? "bg-blue-100" : "bg-area-financial"} rounded-card flex items-start gap-4 p-5`}
                 >
                   <span
                     className={`${blue ? "bg-blue-300" : "bg-gold-400"} text-navy-900 grid size-14 shrink-0 place-items-center rounded-full`}

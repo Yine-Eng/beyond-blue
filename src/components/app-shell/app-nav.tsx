@@ -51,7 +51,7 @@ export function SidebarNav() {
                 href={href}
                 aria-current={active ? "page" : undefined}
                 className={cn(
-                  "text-body flex min-h-11 items-center gap-3 rounded-[var(--radius-button)] px-4 py-2 transition-colors",
+                  "text-body rounded-button flex min-h-11 items-center gap-3 px-4 py-2 transition-colors",
                   active
                     ? "bg-cream-50 text-navy-900 font-semibold"
                     : "text-cream-50 hover:bg-white/10",

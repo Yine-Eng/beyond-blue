@@ -18,7 +18,7 @@ export function AlumniLoopSection() {
         <AlumniLoopCycle />
       </div>
 
-      <div className="mt-12 flex flex-col gap-4 rounded-[var(--radius-card)] bg-blue-100 p-6 sm:flex-row sm:items-center">
+      <div className="rounded-card mt-12 flex flex-col gap-4 bg-blue-100 p-6 sm:flex-row sm:items-center">
         <span className="bg-navy-900 grid size-14 shrink-0 place-items-center rounded-full text-white">
           <Link2 aria-hidden="true" className="size-7" />
         </span>
