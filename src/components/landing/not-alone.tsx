@@ -39,9 +39,9 @@ export function NotAlone() {
           aria-label="Where seniors are headed"
           className="grid grid-cols-3 items-end gap-3 self-center"
         >
-          {POLAROIDS.map(({ label, tilt, tone }, i) => (
+          {POLAROIDS.map(({ label, tilt, tone }) => (
             <li key={label}>
-              <Reveal index={i} tilt={tilt * 2}>
+              <Reveal tilt={tilt * 2}>
                 <div style={{ rotate: `${tilt}deg` }} className="shadow-paper bg-white p-2 pb-1">
                   <div aria-hidden="true" className={`${tone} aspect-[4/5]`} />
                   <p className="font-hand text-navy-900 py-1 text-center text-base leading-tight sm:text-lg">

@@ -43,7 +43,7 @@ export function Launchpad() {
         />
         {READINESS_AREAS.map((area, i) => (
           <li key={area.id} className="relative flex flex-col items-center text-center">
-            <Reveal index={i} tilt={0} className="flex flex-col items-center">
+            <Reveal tilt={0} className="flex flex-col items-center">
               <span
                 className={`${CIRCLES[i % 2]} font-hand relative grid size-20 place-items-center rounded-full leading-none`}
               >

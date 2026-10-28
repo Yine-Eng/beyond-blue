@@ -216,3 +216,26 @@
     scroll-behavior: auto !important;
   }
 }
+
+/*
+ * Story-site "pinned paper" drop-in, driven by scroll position (no JavaScript).
+ * Browsers without scroll-driven animations simply show the content static.
+ */
+@keyframes pin-drop {
+  from {
+    transform: translateY(-14px) rotate(var(--reveal-tilt, -2deg));
+  }
+  to {
+    transform: none;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: pin-drop linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 70%;
+    }
+  }
+}

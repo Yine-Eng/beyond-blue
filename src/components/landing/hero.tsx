@@ -8,7 +8,11 @@ const STACK_TONES = ["bg-blue-200", "bg-cream-100", "bg-gold-400", "bg-blue-300"
 
 export function Hero() {
   return (
-    <section aria-labelledby="hero-title" className="relative px-4 pt-10 pb-8 sm:px-6 sm:pt-16">
+    <section
+      aria-labelledby="hero-title"
+      className="relative isolate px-4 pt-10 pb-8 sm:px-6 sm:pt-16"
+    >
+      <div aria-hidden="true" className="bg-burst absolute inset-0 -z-10" />
       <PaperCard
         variant="torn"
         className="relative mx-auto max-w-5xl px-5 pt-12 pb-10 sm:px-12 sm:pt-16"

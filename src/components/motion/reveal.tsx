@@ -1,32 +1,26 @@
-"use client";
-
-import * as m from "motion/react-m";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
+import { cn } from "@/lib/utils";
 
 type RevealProps = {
   children: ReactNode;
   className?: string;
-  /** Stagger index for groups of cards. */
-  index?: number;
   /** Starting tilt in degrees, like paper being pinned down. */
   tilt?: number;
 };
 
 /**
- * Cards "drop in" like pinned paper when they scroll into view.
- * Only transforms animate: content is never hidden, so it stays visible before hydration,
- * without JavaScript, and to crawlers. Reduced motion skips the transform entirely.
+ * Cards "drop in" like pinned paper as they scroll into view.
+ * Pure CSS scroll-driven animation (see `.reveal` in globals.css): no JavaScript, content is
+ * always visible, browsers without `animation-timeline` show it static, and reduced motion
+ * turns it off.
  */
-export function Reveal({ children, className, index = 0, tilt = -2 }: RevealProps) {
+export function Reveal({ children, className, tilt = -2 }: RevealProps) {
   return (
-    <m.div
-      className={className}
-      initial={{ y: -14, rotate: tilt }}
-      whileInView={{ y: 0, rotate: 0 }}
-      viewport={{ once: true, margin: "0px 0px -10% 0px" }}
-      transition={{ type: "spring", stiffness: 260, damping: 24, delay: index * 0.06 }}
+    <div
+      className={cn("reveal", className)}
+      style={{ "--reveal-tilt": `${tilt}deg` } as CSSProperties}
     >
       {children}
-    </m.div>
+    </div>
   );
 }
